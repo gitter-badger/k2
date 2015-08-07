@@ -1,0 +1,43 @@
+{% extends "settings.html" %}
+
+{% load i18n %}
+
+{% block settings %}
+            <ul class="tabs">
+                <li class="active"><a href="{% url stories:update_userpref %}">{% trans "settings"|capfirst %}</a></li>
+                <li><a href="{% url profiles:update_profile %}">{% trans "profile"|capfirst %}</a></li>
+                <li><a href="{% url profiles:update_avatar %}">{% trans "avatar"|capfirst %}</a></li>
+                <li><a href="{% url styles:update_userstyle %}">{% trans "styles"|capfirst %}</a></li>
+                <li><a href="{% url profiles:password_change %}">{% trans "password"|capfirst %}</a></li>
+            </ul>
+
+            <form class="edit_profile" method="post" action="">
+                {% csrf_token %}
+                <fieldset class="aligned wide">
+                <div class="form-row">
+{% if form.comment_rating_style.errors %}{% for error in form.comment_rating_style.errors %}
+                    <p class="error" id="title_error">{{ error }}</p>
+{% endfor %}{% endif %}
+                    {{ form.comment_rating_style.label_tag }} {{ form.comment_rating_style }}
+                    <small>{{ form.comment_rating_style.help_text }}</small>
+                </div>
+                <div class="form-row">
+{% if form.frame.errors %}{% for error in form.frame.errors %}
+                    <p class="error" id="title_error">{{ error }}</p>
+{% endfor %}{% endif %}
+                    {{ form.frame }} {{ form.frame.label_tag }}
+                    <small>{{ form.frame.help_text }}</small>
+                </div>
+                <div class="form-row">
+{% if form.comment_threshold.errors %}{% for error in form.comment_threshold.errors %}
+                    <p class="error" id="title_error">{{ error }}</p>
+{% endfor %}{% endif %}
+                    {{ form.comment_threshold.label_tag }} {{ form.comment_threshold }}
+                    <small>{{ form.comment_threshold.help_text }}</small>
+                </div>
+                <div class="submit-row">
+                    <input class="input_submit" type="submit" name="Submit" value="{% trans "Save" %}" />
+                </div>
+            </fieldset>
+        </form>
+{% endblock %}

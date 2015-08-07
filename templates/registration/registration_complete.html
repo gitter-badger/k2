@@ -1,0 +1,14 @@
+{% extends "registration/base.html" %}
+
+{% load i18n %}
+
+{% block title %} - {% trans "registration complete"|capfirst %}{% endblock %}
+
+{% block content %}
+        <div id="center">
+            <div id="static">
+                <h2 class="page-title">{% trans "registration complete"|capfirst %}</h2>
+                <p>{% trans "An activation link has been sent to the email address you supplied, along with instructions for activating your account." %}</p>
+            </div>
+        </div>
+{% endblock %}

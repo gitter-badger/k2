@@ -1,0 +1,31 @@
+{% load i18n %}
+{% load markup %}
+{% load voting_tags %}
+{% vote_by_user user on comment as user_vote %}
+            <div class="comment" id="comment-{{ comment.id }}">
+                <div class="comment_head{% if score.score > 9 %} highlight{% endif %}">
+                    <span class="comment_author">
+                        <a class="user {COMMENTS.user_class}" href="{% url profiles:profile comment.user.username %}" title="{% trans "user profile"|capfirst %}">{{ comment.user.username }}</a>
+                    </span>
+                    <div class="comment_rating" title="{% if not comment_rating_style %}{{ score.positive_score }} | {{ score.negative_score }}{% else %}{{ score.score }}{% endif %}">
+                        <a{% if can_vote_minus %} href="javascript:comment_voteminus({{ comment.id }});"{% endif %} id="cdown{{ comment.id }}" class="vote_minus{% if not can_vote_minus %} voted{% endif %}">&nbsp;</a>
+                        <a{% if can_vote_plus %} href="javascript:comment_voteplus({{ comment.id }});"{% endif %} id="cup{{ comment.id }}" class="vote_plus{% if not can_vote_plus %} voted{% endif %}">&nbsp;</a>
+                        <span class="comment_rate" id="comd{{ comment.id }}">{% if comment_rating_style %}<span class="cdigs">{{ score.positive_score }}</span> | <span class="cburies">{{ score.negative_score }}</span>{% else %}{{ score.score }}{% endif %}
+                        </span>
+                        <span class="comment_but" id="commbut{{ comment.id }}">{% if comment_hidden %}{% trans "show comment"|capfirst %}{% endif %}</span>
+                    </div>
+                </div>
+
+                <div class="comment_content" id="commdesc{{ comment.id }}">
+                    <div class="comment_avatar">
+                        <img src="{{ comment.user.profile.avatar.url_48x48 }}" alt="awatar {{ comment.user.username }}"/>
+                    </div>
+                    <div class="comment_text{% if observing.last_seen < comment.date_modified %} notseen{% endif %}" id="commentcont{{ comment.id }}">
+                        {{ comment.comment|markdown }}
+                    </div>
+
+                    <div class="comment_links">
+                        <a class="comment_link" href="{% url stories:story_slug comment.content_object.id comment.content_object.slug %}#comment-{{ comment.id }}" title="{% trans "permalink" %}"><span>{% trans "permalink" %}</span></a>
+                    </div>
+                </div>
+            </div>

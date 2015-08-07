@@ -1,0 +1,40 @@
+{% extends "settings.html" %}
+
+{% load i18n %}
+
+{% block content %}
+    <aside class="sidebox">
+        <h3>What is avatar?</h3>
+        <p>Avatar to grafika pojawiająca się przy Twoim podpisie, kiedy na przykład komentujesz lub dodajesz znalezisko. Avatary pomagają w szybki sposób identyfikować Twoje wpisy.</p>
+        <h3>What best image?</h3>
+        <p>Aby uzyskać najlepszej jakości avatara dodaj grafikę w rozmiarze 100×100px.</p>
+    </aside>
+        <section id="static-page">
+            <h2 class="page-title">{% trans "user settings"|capfirst %}</h2>
+
+            <ul class="tabs">
+                <li><a href="{% url stories:update_userpref %}">{% trans "settings"|capfirst %}</a></li>
+                <li><a href="{% url profiles:update_profile %}">{% trans "profile"|capfirst %}</a></li>
+                <li class="active"><a href="{% url profiles:update_avatar %}">{% trans "avatar"|capfirst %}</a></li>
+                <li><a href="{% url styles:update_userstyle %}">{% trans "styles"|capfirst %}</a></li>
+                <li><a href="{% url profiles:password_change %}">{% trans "password"|capfirst %}</a></li>
+            </ul>
+
+            <form class="edit_profile" method="post" action="" enctype="multipart/form-data">
+                {% csrf_token %}
+                <fieldset class="aligned wide">
+                <div class="form-row">
+{% if form.avatar.errors %}{% for error in form.avatar.errors %}
+                    <p class="error" id="title_error">{{ error }}</p>
+{% endfor %}{% endif %}
+                    <p><img src="{{ request.user.profile.avatar.url_64x64 }}" alt="{% trans "your avatar"|capfirst %}" /></p>
+                    {{ form.avatar }}
+                    <p class="help">{{ form.avatar.help_text }}</p>
+                </div>
+                <div class="submit-row">
+                    <input class="input_submit" type="submit" name="Submit" value="{% trans "Save" %}" />
+                </div>
+                </fieldset>
+            </form>
+        </section>
+{% endblock %}

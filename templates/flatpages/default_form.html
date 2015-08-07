@@ -1,0 +1,65 @@
+{% extends "flatpages/base.html" %}
+
+{% load i18n %}
+
+{% block js_ext %}
+    {{ form.media }}
+{% endblock %}
+
+{% block content %}
+        <div id="static">
+                <h2 class="page-title">{% trans "Change" %} {% trans "flat page" %}</h2>
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <fieldset class="aligned wide">
+                    <div class="form-row">
+                        {{ form.url.label_tag }}
+{% if form.url.errors %}{% for error in form.url.errors %}
+                        <p class="error" id="title_error">{{ error }}</p>
+{% endfor %}{% endif %}
+                        {{ form.url }}
+                    </div>
+                    <div class="form-row">
+                        {{ form.title.label_tag }}
+{% if form.title.errors %}{% for error in form.title.errors %}
+                        <p class="error" id="title_error">{{ error }}</p>
+{% endfor %}{% endif %}
+                        {{ form.title }}
+                    </div>
+                    <div class="form-row">
+                        {{ form.content.label_tag }}
+{% if form.content.errors %}{% for error in form.content.errors %}
+                        <p class="error" id="title_error">{{ error }}</p>
+{% endfor %}{% endif %}
+                        {{ form.content }}
+                    </div>
+                    <div class="form-row">
+                        {{ form.template_name.label_tag }}
+{% if form.template_name.errors %}{% for error in form.template_name.errors %}
+                        <p class="error" id="title_error">{{ error }}</p>
+{% endfor %}{% endif %}
+                        {{ form.template_name }}
+                        <small>{{ form.template_name.help_text }}</small>
+                    </div>
+                    <div class="form-row">
+{% if form.enable_comments.errors %}{% for error in form.enable_comments.errors %}
+                        <p class="error" id="title_error">{{ error }}</p>
+{% endfor %}{% endif %}
+                        {{ form.enable_comments }} {{ form.enable_comments.label_tag }}
+                    </div>
+                    <div class="form-row">
+{% if form.registration_required.errors %}{% for error in form.registration_required.errors %}
+                        <p class="error" id="title_error">{{ error }}</p>
+{% endfor %}{% endif %}
+                        {{ form.registration_required }} {{ form.registration_required.label_tag }}
+                        <small>{{ form.registration_required.help_text }}</small>
+                    </div>
+                    <div class="submit-row">
+                        <input type="submit" value="{% trans "Save" %}" />
+                    </div>
+                </fieldset>
+                </form>
+                <div class="buttons">
+                </div>
+            </div>
+{% endblock %}

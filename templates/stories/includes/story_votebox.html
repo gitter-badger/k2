@@ -1,0 +1,30 @@
+{% load i18n %}
+{% load voting_tags %}
+{% score_for_object story as score %}
+{% vote_by_user user on story as user_vote %}
+
+{% if request.user.is_authenticated %}
+    {% if user_vote.vote > 0 %}
+                <div class="sidebox votebox voted">
+                    <form class="story_vote_form" method="post" action="{% url stories:undig_story_slug story.id story.slug %}">
+                        {% csrf_token %}
+                        <div class="score positive" id="story_{{ story.id }}">{{ score.positive_num_votes }} <span>{% blocktrans count score.positive_num_votes as votes %}vote{% plural %}votes{% endblocktrans %}</span></div>
+                        <input type="hidden" name="reason" value="0">
+                        <input type="submit" class="story_vote_button" value="{% trans "undo vote" %}" title="{% trans "Undig it" %}">
+                    </form>
+                </div>
+    {% else %}
+                <div class="sidebox votebox">
+                    <form class="story_vote_form" method="post" action="{% url stories:dig_story_slug story.id story.slug %}">
+                        {% csrf_token %}
+                        <div class="score positive" id="story_{{ story.id }}">{{ score.positive_num_votes }} <span>{% blocktrans count score.positive_num_votes as votes %}vote{% plural %}votes{% endblocktrans %}</span></div>
+                        <input type="hidden" name="reason" value="0">
+                        <input type="submit" class="story_vote_button" value="{% trans "vote" %}" title="{% trans "Dig it" %}">
+                    </form>
+                </div>
+    {% endif %}
+{% else %}
+                <div class="sidebox votebox">
+                    <div class="score positive" id="story_{{ story.id }}">{{ score.positive_num_votes }} <span>{% blocktrans count score.positive_num_votes as votes %}vote{% plural %}votes{% endblocktrans %}</span></div>
+                </div>
+{% endif %}

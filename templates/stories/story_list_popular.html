@@ -1,0 +1,43 @@
+{% extends "stories/story_list.html" %}
+
+{% load i18n %}
+{% load story_tags %}
+{% load userpref_tags %}
+
+{% block rss %}
+    <link rel="alternate" type="application/rss+xml" title="{{ site }} - Popularne" href="/rss/popularne/">
+    <link rel="alternate" type="application/rss+xml" title="{{ site }} - Najnowsze komentarze" href="/rss/komentarze/">
+{% endblock %}
+
+{% block tabs %}
+            <ul class="tabs no_title mini">
+                <li class="active"><a href="">{% trans "popular"|capfirst %}</a></li>
+                <li><a href="{% if category %}{% url stories:upcoming_category_list category.slug %}{% else %}{% url stories:upcoming_story_list %}{% endif %}">{% trans "upcoming"|capfirst %}</a></li>
+                {% if not category and request.user.is_authenticated %}<li><a href="{% url stories:saved_story_list %}">{% trans "saved"|capfirst %}</a></li>{% endif %}
+            </ul>
+{% popular_sort_list %}
+{% endblock %}
+
+{% block story_list %}
+{% if random_story %}
+{% render_story_random random_story %}
+{% endif %}
+{{ block.super }}
+{% endblock %}
+
+{% block paginator %}
+{% if has_previous or has_next %}
+    <ul class="pagination">
+        {% if has_previous %}
+        <li><a title="{% trans "Previous page" %}" href="{% url stories:popular_story_list %}?page={{ previous }}">&laquo;</a></li>
+        {% endif %}
+        {% for page in page_range %}
+        <li{% ifequal page page_obj.number %} class="active">{{ page }}{% else %}><a title="{% blocktrans %}Page {{ page }}{% endblocktrans %}" href="{% url stories:popular_story_list %}?page={{ page }}">{{ page }}</a>{% endifequal %}</li>
+        {% endfor %}
+        {% if has_next %}
+        <li><a title="{% trans "Next page" %}" href="{% url stories:popular_story_list %}?page={{ next }}">&raquo;</a></li>
+        {% endif %}
+    </ul>
+{% endif %}
+{% if not category %}{% render_site_stats %}{% endif %}
+{% endblock %}

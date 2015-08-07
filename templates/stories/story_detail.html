@@ -1,0 +1,125 @@
+{% extends "stories/base.html" %}
+
+{% load i18n %}
+{% load markup %}
+{% load embed_tags %}
+{% load comments %}
+{% load threadedcomments_tags %}
+{% load voting_tags %}
+{% load story_tags %}
+{% load story_sidebar_tags %}
+
+{% block title %} - {{ story.title }}{% endblock %}
+
+{% block rss %}
+{% if story.published_date %}
+    <link rel="alternate" type="application/rss+xml" title="{{ site }} - Popularne" href="{% url stories:popular_feed %}">
+{% else %}
+    <link rel="alternate" type="application/rss+xml" title="{{ site }} - Najnowsze" href="{% url stories:upcoming_feed %}">
+{% endif %}
+    <link rel="alternate" type="application/rss+xml" title="{{ site }} - Najnowsze komentarze do '{{ story.title }}'" href="{% url stories:story_feed story.id %}">
+{% endblock %}
+
+{% block js_ext %}
+    <script src="{{ MEDIA_URL }}js/jquery.elastic.js" type="text/javascript" charset="utf-8"></script>
+{% endblock %}
+
+{% block feeds %}
+        <ul id="feed_list">
+{% if story.published_date %}
+            <li class="feed-channel"><a href="{% url stories:popular_feed %}" title="Popularne">Najnowsze linki</a></li>
+{% else %}
+            <li class="feed-channel"><a href="{% url stories:upcoming_feed %}" title="Najnowsze">Najnowsze linki</a></li>
+{% endif %}
+            <li class="feed-channel"><a href="{% url stories:story_feed story.id %}" title="Najnowsze komentarze do {{ story.title }}">Najnowsze komentarze</a></li>
+        </ul>
+{% endblock %}
+
+{% block content %}
+        <aside>
+{% sidebar_search %}
+{% if user.is_moderator %}
+            <div class="sidebox">
+                <h3 class="toggle">{% trans "Moderate story" %}</h3>
+                <div id="mod_links">
+                    <ul>
+                        <li><a href="{% url stories:story_edit story.id story.slug %}">{% trans "Change" %}</a></li>
+{% if not story.is_locked and not story.is_removed and not story.is_public %}
+                        <li><a href="{% url stories:story_approve story.id %}">{% trans "Approve"|capfirst %}</a></li>
+{% endif %}
+{% if not story.is_locked and not story.is_removed %}
+                        <li><a href="{% url stories:story_lock story.id %}">{% trans "Lock"|capfirst %}</a></li>
+                        <li><a href="{% url stories:story_delete story.id %}">{% trans "Delete" %}</a></li>
+{% endif %}
+                    </ul>
+                </div>
+            </div>
+{% endif %}
+{% sidebar_story_author story.user %}
+{% sidebar_story_votes_positive story %}
+{% sidebar_story_votes_negative story %}
+{% sidebar_user_stories %}
+        </aside>
+
+        <div id="left">
+{% if not story.is_locked and not story.is_removed and not story.is_public %}
+            <h2 class="info">{% trans "story is waiting for moderation"|capfirst %}</h2>
+{% endif %}
+{% if story.is_locked %}
+            <h2 class="info">{% trans "story is locked"|capfirst %}</h2>
+{% endif %}
+{% if story.is_removed %}
+            <h2 class="info">{% trans "story is removed"|capfirst %}</h2>
+{% endif %}
+{% render_reference_submit_form story %}
+{% render_story_detail story %}
+		
+            <div class="oembed">{{ story.url|embed:"560x560" }}</div>
+
+{% if story.num_references %}
+            <div class="references">
+                <h2 class="page-title">{% blocktrans count story.num_references as references %}{{ references }} reference{% plural %}{{ references }} references{% endblocktrans %}</h2>
+                <ul id="reference_list">
+{% for reference in story.references.all %}
+                    <li class="{% cycle 'odd' 'even' %}">
+                        {% render_reference reference %}
+                    </li>
+{% endfor %}
+                </ul>
+            </div>
+{% endif %}
+{% block story_content %}
+{% if story.enable_comments %}{% get_comment_form for story as comment_form %}
+		<div id="story_content">
+{% if story.num_comments > 0 %}{% get_comment_list for story as comment_list %}
+            <div class="comments">
+                <h2 class="page-title">{% blocktrans count story.num_comments as comments %}{{ comments }} comment{% plural %}{{ comments }} comments{% endblocktrans %}</h2>
+                <!--div id="comments_links">
+                    <a id="comments_dug_link" href="#" title="Zminusowane komentarze"><span>Pokaż zminusowane</span></a>
+                    <a id="comments_red_link" href="#" title="Przeczytane komentarze"><span>Ukryj przeczytane<span></a>
+                </div-->
+                <ul id="comment_list">
+{% for comment in comment_list %}
+                    <li class="{% cycle 'odd' 'even' %}">
+                        {% render_comment comment %}
+                    </li>
+{% endfor %}
+                </ul>
+            </div>
+{% endif %}
+            <section class="add_comment">
+{% if form.error %}
+                <p class="error">{COMMENT_ERROR}</p>
+{% endif %}
+                <h2 class="page-title">{% trans "Add a comment" %}</h2>
+{% if user.is_authenticated %}
+                {% render_comment_form for story %}
+{% else %}
+                <p class="help">Proszę <a href="/logowanie/">zaloguj się</a> lub <a href="/rejestracja/">zarejestruj</a> aby dodać komentarz</p>
+{% endif %}
+            </section>
+		</div>
+{% endif %}
+{% endblock %}
+	</div>
+{% endblock %}

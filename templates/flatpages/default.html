@@ -1,0 +1,31 @@
+{% extends "flatpages/base.html" %}
+
+{% load i18n %}
+{% load nav %}
+
+{% block content %}
+{% if perms.flatpages.change_flatpage or perms.flatpages.delete_flatpage %}
+    <aside class="sidebox">
+        <h3>Moderate</h3>
+        <ul>
+{% if perms.flatpages.change_flatpage %}
+            <li><a href="?action=edit">{% trans "edit" %}</a></li>
+{% endif %}
+{% if perms.flatpages.delete_flatpage %}
+            <li><a onclick="confirm('{% trans "Are you sure?" %}')" href="?action=delete">{% trans "delete" %}</a></li>
+{% endif %}
+        </ul>
+    </aside>
+{% endif %}
+        <section id="static-page">
+            <h2 class="page-title">{{ flatpage.title }}</h2>
+            {{ flatpage.content }}
+        </section>
+{% endblock %}
+
+{% block pages %}
+{% if request.path == "/idea/" %}{% nav "idea" %}{% endif %}
+{% if request.path == "/regulamin/" %}{% nav "tos" %}{% endif %}
+{% if request.path == "/narzedzia/" %}{% nav "tools" %}{% endif %}
+{{ block.super }}
+{% endblock %}

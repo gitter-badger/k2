@@ -1,0 +1,80 @@
+{% extends "settings.html" %}
+
+{% load i18n %}
+
+{% block content %}
+    <aside class="sidebox">
+        <h3>Your data visibility</h3>
+        <p>{% blocktrans %}Data entered here will be visible for all logged in users.{% endblocktrans %}</p>
+    </aside>
+        <section id="static-page">
+            <h2 class="page-title">{% trans "user settings"|capfirst %}</h2>
+
+            <ul class="tabs">
+                <li><a href="{% url stories:update_userpref %}">{% trans "settings"|capfirst %}</a></li>
+                <li class="active"><a href="{% url profiles:update_profile %}">{% trans "profile"|capfirst %}</a></li>
+                <li><a href="{% url profiles:update_avatar %}">{% trans "avatar"|capfirst %}</a></li>
+                <li><a href="{% url styles:update_userstyle %}">{% trans "styles"|capfirst %}</a></li>
+                <li><a href="{% url profiles:password_change %}">{% trans "password"|capfirst %}</a></li>
+            </ul>
+
+            <form class="edit_profile" method="post" action="">
+                {% csrf_token %}
+                <fieldset class="aligned wide">
+                <div class="form-row">
+{% if form.email_show.errors %}{% for error in form.email_show.errors %}
+                    <p class="error" id="title_error">{{ error }}</p>
+{% endfor %}{% endif %}
+                    {{ form.email_show.label_tag }}
+                    <input type="text" disabled="disabled" value="{{ request.user.email }}" /> {{ form.email_show }}
+                    <small>{{ form.email_show.help_text }}</small>
+                </div>
+                <div class="form-row">
+{% if form.website.errors %}{% for error in form.website.errors %}
+                    <p class="error" id="title_error">{{ error }}</p>
+{% endfor %}{% endif %}
+                    {{ form.website.label_tag }}
+                    {{ form.website }}
+                </div>
+                <div class="form-row">
+{% if form.jabber.errors %}{% for error in form.jabber.errors %}
+                    <p class="error" id="title_error">{{ error }}</p>
+{% endfor %}{% endif %}
+                    {{ form.jabber.label_tag }}
+                    {{ form.jabber }}
+                </div>
+                <div class="form-row">
+{% if form.gg.errors %}{% for error in form.gg.errors %}
+                    <p class="error" id="title_error">{{ error }}</p>
+{% endfor %}{% endif %}
+                    {{ form.gg.label_tag }}
+                    {{ form.gg }}
+                </div>
+                <div class="form-row">
+{% if form.gender.errors %}{% for error in form.gender.errors %}
+                    <p class="error" id="title_error">{{ error }}</p>
+{% endfor %}{% endif %}
+                    {{ form.gender.label_tag }}
+                    {{ form.gender }}
+                </div>
+                <div class="form-row">
+{% if form.location.errors %}{% for error in form.location.errors %}
+                    <p class="error" id="title_error">{{ error }}</p>
+{% endfor %}{% endif %}
+                    {{ form.location.label_tag }}
+                    {{ form.location }}
+                </div>
+                <div class="form-row">
+{% if form.about.errors %}{% for error in form.about.errors %}
+                    <p class="error" id="title_error">{{ error }}</p>
+{% endfor %}{% endif %}
+                    {{ form.about.label_tag }}
+                    {{ form.about }}
+                </div>
+                <div class="submit-row">
+                    <input class="input_submit" type="submit" name="story_submit" value="{% trans "Save" %}" />
+                </div>
+                </fieldset>
+            </form>
+        </section>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% load i18n %}
+{% if request.user.is_authenticated %}
+        <div class="sidebox">
+            <h3 class="toggle">{% trans "Watched content" %}</h3>
+ <!-- Watched -->
+{% if not obs %}
+            <div class="tab_toggle_content noresults">{% trans "You are not watching any stories" %}</div>
+{% else %}{% for story in obs %}
+            <div class="tab_toggle_content {% cycle "odd" "even" %}">
+                <a href="#" onclick="delete_observe(this, '.$info['story_id'].', \'obs\')" class="trash"></a>
+                <div class="rating">
+                    <div class="num">
+                        <a href="'.$story_link.$com_latest.'">'.$info['story_digs'].'</a>
+                    </div>
+                </div>
+                <div class="post">
+                    <h2><a title="'.$info['story_title'].'" href="'.$story_link.$com_latest.'">'.$info['story_title'].'</a></h2>
+                    <p><span class="comm">'.$info['story_comments'].' '.pluralize($info['story_comments'], 'komentarz', 'komentarze', 'komentarzy').$nowe_txt.'</span></p>
+                </div>
+            </div>
+{% endfor %}
+            <div class="item bottom_links">
+                <span><a href="'.$full_obs_link.'" title="Pełna lista">&nbsp;</a></span>
+	if($is_new) $sidebar2 .= ' 
+                <span onclick="mark_all_obs_read(this);" title="Oznacz wszystkie jako przeczytane">&nbsp;</span>
+            </div>
+{% endif %}
+        </div>
+{% endif %}

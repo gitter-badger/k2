@@ -1,0 +1,198 @@
+{% load i18n %}
+{% load category_tags %}
+{# load dajaxice_templatetags #}
+{% load analytics %}
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ site }}{% block title %} - Kultura, linki i dyskusje{% endblock %}</title>
+    <meta name="description" content="{% block description %}{% endblock %}">
+    <meta name="keywords" content="{% block keywords %}{% endblock %}">
+    <meta name="google-site-verification" content="zYKCgi5_fckEx55MIyS7CRCFehVDXjHWgNcu_NW6x40">
+    <!-- CascadingStyleSheets -->
+    <link rel="stylesheet" title="{{ styles.user.title }}" href="{{ styles.user.url }}" media="{{ styles.user.media }}">
+{% for alt_style in styles.alt %}
+    <link rel="alternate stylesheet" title="{{ alt_style.title }}" href="{{ alt_style.url }}" media="{{ alt_style.media }}">
+{% endfor %}
+{% if styles.max_width %}
+    <style type="text/css">.container{max-width:{{ styles.max_width }};}</style>
+{% endif %}
+{% if user.is_moderator %}
+    <link rel="stylesheet" href="{{ MEDIA_URL }}css/modpanel.css">
+{% endif %}
+    <!-- Extra CSS -->
+{% block css_ext %}{% endblock %}
+    <!-- Icon -->
+    <link rel="shortcut icon" href="{{ MEDIA_URL }}img/klid.ico"> 
+    <!-- RSS -->
+{% block rss %}
+    <link rel="alternate" type="application/rss+xml" title="{{ site }} - Popularne" href="{% url stories:popular_feed %}">
+    <link rel="alternate" type="application/rss+xml" title="{{ site }} - Najnowsze komentarze" href="{% url stories:comment_feed %}">
+{% endblock %}
+{% block rss_ext %}{% endblock %}
+    <!-- OExchange -->
+    <link rel="http://oexchange.org/spec/0.8/rel/related-target" type="application/xrd+xml" href="{SITE_URL}oexchange.xrd">
+    <!-- JavaScript -->
+{% block js %}
+    <script type="text/javascript">
+        if(top !== self) {
+            if(self.location.host!='nblo.gs' || self.location.host!='networkedblogs.com') top.location = self.location;
+            else top.location = self.location;
+        }
+    </script>
+    {# dajaxice_js_import #}
+    <script type='text/javascript' src='{{ MEDIA_URL }}js/jquery.min.js'></script>
+    <!--script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.dajax.core.js"></script-->
+    <!--script type="text/javascript" src="{{ MEDIA_URL }}js/main.js"></script-->
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/k2.js"></script>
+{% if user.is_moderator %}
+    <!--script type="text/javascript" src="{{ MEDIA_URL }}js/modpanel.js"></script-->
+{% endif %}
+    <!-- Extra JS -->
+{% block js_ext %}{% endblock %}
+{% endblock %}
+</head>
+<body>
+{% block body %}
+    <!-- Async JS -->
+{% google_analytics_async %}
+<script type="text/javascript">
+/*    // Tweetboard
+    var _tbdef = {user: 'klidpl'};
+
+    (function(){
+        var d = document;var tbjs = d.createElement('script'); tbjs.type = 'text/javascript';  tbjs.async = true; tbjs.src = 'http://tweetboard.com/tb.js'; var tbel = d.getElementsByTagName('head')[0];  if(!tbel) tbel = d.getElementsByTagName('head')[0]; tbel.appendChild(tbjs); 
+    })();*/
+</script>
+<script type="text/javascript">
+/*    // Sugester
+  (function(){
+    var d = document;var sjs = d.createElement('script'); sjs.type = 'text/javascript';  sjs.async = true;  sjs.src = 'http://app.sugester.pl/klid/widget.js'; var sel = d.getElementsByTagName('head')[0];  if(!sel) sel = d.getElementsByTagName('head')[0]; sel.appendChild(sjs);
+  })();*/
+</script>
+<div class="container"> 
+    <header>
+        <div id="logo">
+            <a href="/"><h1>{{ site.name }}</h1></a>
+        </div>
+        {% block userpanel %}
+        <div id="userpanel">
+{% if request.user.is_authenticated %}
+            <div class="avatar mini">
+                <a title="{% trans "see your profile"|capfirst %}" href="{% url profiles:profile request.user.username %}">
+                    <img src="{{ request.user.profile.avatar.url_16x16 }}" alt="avatar {{ request.user.username }}"/>
+                </a>
+            </div>
+            <div class="controls">
+                <span>{% trans "Welcome" %} </span>
+                <a id="username" class="user advanced" title="{% trans "see your profile"|capfirst %}" href="{% url profiles:profile request.user.username %}">{{ request.user.username }}</a>
+                <span>{% trans "See your" %} </span>
+                <a id="settings" href="{% url stories:update_userpref %}">{% trans "settings"|capfirst %}</a>
+                <ul id="settings_menu">
+                    <li><a href="{% url stories:update_userpref %}">{% trans "Overall" %}</a></li>
+                    <li><a href="{% url profiles:update_profile %}">{% trans "Profile" %}</a></li>
+                    <li><a href="{% url profiles:update_avatar %}">{% trans "Avatar" %}</a></li>
+                    <li><a href="{% url styles:update_userstyle %}">{% trans "Styles" %}</a></li>
+                    <li><a href="{% url profiles:password_change %}">{% trans "Password" %}</a></li>
+                </ul>
+{% if request.user.is_staff %}
+                <a id="admin" title="{% trans "go to admin panel"|capfirst %}" href="/admin/">{% trans "Administration" %}</a>
+{% endif %}
+                <a id="logout" href="{% url profiles:logout %}?next={{ request.path }}">{% trans "Log out" %}</a>
+            </div>
+{% else %}
+            <form id="login-form" method="post" action="{% url profiles:login %}">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ request.get_full_path }}" />
+                <div class="form-row">
+                    <label for="id_username">{% trans "username"|capfirst %}</label>
+                    <input type="text" maxlength="30" name="username" id="id_username" class="login_input">
+                </div>
+                <div class="form-row">
+                    <label for="id_password">{% trans "password"|capfirst %}</label>
+                    <input type="password" id="id_password" name="password" class="login_input">
+                </div>
+                <a id="reminder" href="{% url profiles:login %}">{% trans "forgot password"|capfirst %}?</a>
+                <div class="submit-row">
+                    <input type="submit" value="{% trans "Log in" %}" class="input_submit">
+                </div>
+            </form>
+            <div class="controls">
+                <a id="login" href="{% url profiles:login %}">{% trans "Log in" %}</a>
+                <a id="register" href="{% url profiles:registration_register %}">{% trans "registration"|capfirst %}</a>
+            </div>
+{% endif %}
+        </div>
+        {% endblock %}
+    </header>
+{% block infobox %}
+    <div id="infobox">
+        {% block feeds %}
+        <ul id="feed_list">
+            <li class="feed-channel"><a href="{% url stories:popular_feed %}" title="Popularne">Najnowsze linki</a></li>
+            <li class="feed-channel"><a href="{% url stories:comment_feed %}" title="Najnowsze komentarze">Najnowsze komentarze</a></li>
+        </ul>
+        {% endblock %}
+        {% block announcements %}{% if site_wide_announcements %}
+        <ul id="announcement_list">
+            <li class="announcement-message">
+{% if request.user.is_authenticated %}
+                <p><strong>Thanks for registering, {{ request.user.username }}.</strong> So you're now a member. What's next? Well, you can start creating links, leave comments, reply to others' comments, make friends, give reputation, and much more. Have fun! This message will disappear after you've made your first post.</p>
+{% else %}
+                <!--h3>Odkryj nowe oblicze internetu</h3-->
+                <p><strong>Dołącz do nas aby wspólnie odkrywać nowe strony internetu.</strong> Po zarejestrowaniu i zalogowaniu będziesz mógł dodawać swoje propozucje, komentować, oceniać oraz wiele, wiele więcej.</p>
+{% endif %}
+                <a href="#" class="announcement-trigger">Ukryj wiadomość</a>
+            </li>
+            {% for announcement in site_wide_announcements %}
+            <li class="announcement-message">
+                <p><strong>{{ announcement.title }}.</strong> {{ announcement.content }}</p>
+                <a href="{% url announcement_hide announcement.pk %}?next={{ request.path }}" class="announcement-trigger">Ukryj wiadomość</a>
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}{% endblock %}
+    </div>
+{% endblock %}
+{% block menu %}
+    <nav>
+{% category_list %}
+    </nav>
+{% endblock %}
+
+    <div id="content">
+
+{% if messages %}
+    <div class="messages">
+    {% for message in messages %}
+        <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+    {% endfor %}
+    </div>
+{% endif %}
+
+{% block content %}{% endblock %}
+        <div style="clear:both"></div>
+    </div>
+    <footer>
+{% block pages %}
+        <ul id="pages">
+            <h3>{% trans "pages"|capfirst %}</h3>
+            <li id="page-home"{% if nav.home %} class="selected"{% endif %}><a href="/">{% trans "home"|capfirst %}</a></li>
+            <li id="page-idea"{% if nav.idea %} class="selected"{% endif%}><a href="/idea/">{% trans "idea"|capfirst %}</a></li>
+            <li id="page-tos"{% if nav.tos %} class="selected"{% endif%}><a href="/regulamin/">{% trans "terms of service"|capfirst %}</a></li>
+            {#<li id="page-tags"><a href="/tagi/">{% trans "tag cloud"|capfirst %}</a></li>#}
+            <li id="page-obs"{% if nav.obs %} class="selected"{% endif%}><a href="/obserwatorium/">{% trans "observatory"|capfirst %}</a></li>
+            <li id="page-chat"{% if nav.chat %} class="selected"{% endif%}><a href="/czat/">{% trans "chat"|capfirst %}</a></li>
+            {#<li id="page-forum"><a href="/forum/">{% trans "forum"|capfirst %}</a></li>#}
+            <li id="page-tools"{% if nav.tools %} class="selected"{% endif%}><a href="/narzedzia/">{% trans "tools"|capfirst %}</a></li>
+            <li id="page-contact"{% if nav.contact %} class="selected"{% endif%}><a href="/kontakt/">{% trans "contact"|capfirst %}</a></li>
+            <li id="page-ranking"{% if nav.ranking %} class="selected"{% endif%}><a href="/ranking/">{% trans "user ranking"|capfirst %}</a></li>
+        </ul>
+{% endblock %}
+        <div id="copyright" class="grayed">{% block copyright %}Powered by <a href="http://code.adelie.pl/k2/" title="K2 at Adelie Software">K2</a> © 2010-2011 <a href="http://adelie.pl" title="Adelie Software">Adelie Software</a>{% endblock %}</div>
+    </footer>
+{% endblock %}
+</div>
+</body>
+</html>

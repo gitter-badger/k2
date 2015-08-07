@@ -1,0 +1,39 @@
+{% load i18n %}
+{% load markup %}
+            <article id="comment_{{ comment.id }}" class="comment_block depth_{{ comment.depth }}">
+                <h3 id="comment_head_{{ comment.id }}" class="comment_head{% if score.score > 9 %} highlight{% endif %}">
+                    <time class="comment_date grayed" title="{{ comment.date_submitted }}">{{ comment.submit_date|timesince }} {% trans "ago" %}</time>
+                    <span class="author">
+                        <a class="user {COMMENTS.user_class}" href="{% url profiles:profile comment.user.username %}" title="{% trans "user profile"|capfirst %}">{{ comment.user.username }}</a>
+                        <span class="wrote"> {% trans "wrote" %}</span>
+{% if comment.user.profile.website %}
+                        <a rel="nofollow" class="user_www" href="{{ comment.user.profile.website }}" title="{% trans "user website"|capfirst %}"><span class="www">www</span></a>
+{% endif %}
+                    </span>
+                </h3>
+
+                <div id="comment_content_{{ comment.id }}" class="comment_content">
+                    <div id="comment_avatar_{{ comment.id }}" class="avatar medium">
+                        <img src="{{ comment.user.profile.avatar.url_48x48 }}" alt="awatar {{ comment.user.username }}"/>
+                    </div>
+                    <div id="comment_text_{{ comment.id }}" class="comment_text{% if observing.last_seen < comment.date_modified %} notseen{% endif %}">
+                        {{ comment.comment|markdown }}
+                    </div>
+
+                </div>
+                <div id="comment_links_{{ comment.id }}" class="comment_links">
+{% if can_edit %}
+                    <a class="comment_edit_link" href="javascript:edit_comment({{ comment.id }})" title="{% trans "edit" %}"><span>{% trans "edit" %}<span></a>
+{% endif %}
+{% if can_delete %}
+                    <a class="comment_edit_link" href="javascript:delete_comment({{ comment.id }})" title="{% trans "delete" %}"><span>{% trans "delete" %}<span></a>
+{% endif %}
+{% if request.user.is_authenticated %}
+                    <a class="comment_reply_link" href="javascript:void(0)" onclick="comreply({% if not comment.parent_id %}{{ comment.id }}{% else %}{{ comment.parent_id }}{% endif %},'{{ comment.user.username }}', {{ comment.id }});" title="{% trans "reply" %}"><span>{% trans "reply" %}</span></a>
+{% endif %}
+                    <a class="comment_id_link" href="#comment-{{ comment.id }}" title="{% trans "permalink" %}"><span>{% trans "permalink" %}</span></a>
+{% if can_report %}
+                    <a class="comment_report_link" id="comment_report_link_{{ comment.id }}" href="javascript:void(0);" onclick="reportcom({{ comment.id }}, '{{ comment.user.username }}');" title="{% trans "report" %}"><span>{% trans "report" %}</span></a>
+{% endif %}
+                </div>
+            </article>

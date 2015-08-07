@@ -1,0 +1,41 @@
+{% extends "stories/story_list.html" %}
+
+{% load i18n %}
+{% load userpref_tags %}
+
+{% block rss %}
+    <link rel="alternate" type="application/rss+xml" title="{{ site }} - Najnowsze" href="{% url stories:upcoming_feed %}">
+    <link rel="alternate" type="application/rss+xml" title="{{ site }} - Najnowsze komentarze" href="{% url stories:comment_feed %}">
+{% endblock %}
+
+{% block feeds %}
+        <ul id="feed_list">
+            <li class="feed-channel"><a href="{% url stories:upcoming_feed %}" title="Najnowsze">Najnowsze linki</a></li>
+            <li class="feed-channel"><a href="{% url stories:comment_feed %}" title="Najnowsze komentarze">Najnowsze komentarze</a></li>
+        </ul>
+{% endblock %}
+
+{% block tabs %}
+            <ul class="tabs no_title mini">
+                <li><a href="{% if category %}{% url stories:popular_category_list category.slug %}{% else %}{% url stories:popular_story_list %}{% endif %}">{% trans "popular"|capfirst %}</a></li>
+                <li class="active"><a href="">{% trans "upcoming"|capfirst %}</a></li>
+                {% if not category %}<li><a href="{% url stories:saved_story_list %}">{% trans "saved"|capfirst %}</a></li>{% endif %}
+            </ul>
+{% upcoming_sort_list %}
+{% endblock %}
+
+{% block paginator %}
+{% if has_previous or has_next %}
+    <ul class="pagination">
+        {% if has_previous %}
+        <li><a title="{% trans "Previous page" %}" href="{% url stories:upcoming_story_list %}?page={{ previous }}">&laquo;</a></li>
+        {% endif %}
+        {% for page in page_range %}
+        <li{% ifequal page page_obj.number %} class="active">{{ page }}{% else %}><a title="{% blocktrans %}Page {{ page }}{% endblocktrans %}" href="{% url stories:upcoming_story_list %}?page={{ page }}">{{ page }}</a>{% endifequal %}</li>
+        {% endfor %}
+        {% if has_next %}
+        <li><a title="{% trans "Next page" %}" href="{% url stories:upcoming_story_list %}?page={{ next }}">&raquo;</a></li>
+        {% endif %}
+    </ul>
+{% endif %}
+{% endblock %}

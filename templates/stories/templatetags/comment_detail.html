@@ -1,0 +1,47 @@
+{% load i18n %}
+{% load threadedcommentstags %}
+{% load voting_tags %}
+{% vote_by_user user on comment as user_vote %}
+            <div class="comment{% if observing.last_seen < comment.date_modified %} comment_notseen{% endif %}{% if comment_hidden %} comment_dug comment_hidden{% endif %}{% if comment.parent_id %} reply{% endif %}{% if comment.user_id == request.user.id %} own_comment{% endif %}IF("{COMMENTS.last_seen}"=="0"){ unseen_index_{COMMENTS.unseen_index}" unseen_index="{COMMENTS.unseen_index}{:IF}" id="comment-{{ comment.id }}">
+                <div class="comment_head{% if score.score > 9 %} highlight{% endif %}">
+                    <span class="comment_author">
+                        <a class="user {COMMENTS.user_class}" href="{% url profiles:profile comment.user.username %}" title="{% trans "user profile"|capfirst %}">{{ comment.user.username }}</a>
+{% if comment.user.profile.website %}
+                        <a rel="nofollow" class="user_www" href="{{ comment.user.profile.website }}" title="{% trans "user website"|capfirst %}"><span>{% trans "website" %}</span></a>
+{% endif %}
+                    </span>
+                    <span class="comment_date" title="{{ comment.date_submitted }}">{{ comment.date_submitted|timesince }} {% trans "ago" %}</span>
+                    <div class="comment_rating" title="{% if not comment_rating_style %}{{ score.positive_score }} | {{ score.negative_score }}{% else %}{{ score.score }}{% endif %}">
+                        <a{% if can_vote_minus %} href="javascript:comment_voteminus({{ comment.id }});"{% endif %} id="cdown{{ comment.id }}" class="vote_minus{% if not can_vote_minus %} voted{% endif %}">&nbsp;</a>
+                        <a{% if can_vote_plus %} href="javascript:comment_voteplus({{ comment.id }});"{% endif %} id="cup{{ comment.id }}" class="vote_plus{% if not can_vote_plus %} voted{% endif %}">&nbsp;</a>
+                        <span class="comment_rate" id="comd{{ comment.id }}">{% if comment_rating_style %}<span class="cdigs">{{ score.positive_score }}</span> | <span class="cburies">{{ score.negative_score }}</span>{% else %}{{ score.score }}{% endif %}
+                        </span>
+                        <span class="comment_but" id="commbut{{ comment.id }}">{% if comment_hidden %}{% trans "show comment"|capfirst %}{% endif %}</span>
+                    </div>
+                </div>
+
+                <div class="comment_content" id="commdesc{{ comment.id }}">
+                    <div class="comment_avatar">
+                        <img src="{{ comment.user.profile.avatar.url_48x48 }}" alt="awatar {{ comment.user.username }}"/>
+                    </div>
+                    <div class="comment_text{% if observing.last_seen < comment.date_modified %} notseen{% endif %}" id="commentcont{{ comment.id }}">
+                        {% auto_transform_markup comment %}
+                    </div>
+
+                    <div class="comment_links">
+{% if can_edit %}
+                        <a class="comment_edit_link" href="javascript:edit_comment({{ comment.id }})" title="{% trans "edit" %}"><span>{% trans "edit" %}<span></a>
+{% endif %}
+{% if can_delete %}
+                        <a class="comment_edit_link" href="javascript:delete_comment({{ comment.id }})" title="{% trans "delete" %}"><span>{% trans "delete" %}<span></a>
+{% endif %}
+{% if request.user.is_authenticated %}
+                        <a class="comment_reply_link" href="javascript:void(0)" onclick="comreply({% if not comment.parent_id %}{{ comment.id }}{% else %}{{ comment.parent_id }}{% endif %},'{{ comment.user.username }}', {{ comment.id }});" title="{% trans "reply" %}"><span>{% trans "reply" %}</span></a>
+{% endif %}
+                        <a class="comment_link" href="#comment-{{ comment.id }}" title="{% trans "permalink" %}"><span>{% trans "permalink" %}</span></a>
+{% if can_report %}
+                        <a class="comment_report_link" id="comment_report_link_{{ comment.id }}" href="javascript:void(0);" onclick="reportcom({{ comment.id }}, '{{ comment.user.username }}');" title="{% trans "report" %}"><span>{% trans "report" %}</span></a>
+{% endif %}
+                    </div>
+                </div>
+            </div>

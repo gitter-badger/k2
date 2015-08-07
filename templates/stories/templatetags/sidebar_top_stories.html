@@ -1,0 +1,43 @@
+{% load i18n %}
+{% load cache %}
+{% load story_tags %}
+        <div class="sidebox">
+            <h3 class="toggle">Top</h3>
+            <ol id="top_links" class="tabs no_title mini">
+                <li id="tab_link_day" class="active"><a rel="top-day" href="#" title="{% trans "top of the day"|capfirst %}">{% trans "day"|capfirst %}</a></li>
+                <li id="tab_link_week"><a rel="top-week" href="#" title="{% trans "top of the week"|capfirst %}">{% trans "week"|capfirst %}</a></li>
+                <li id="tab_link_month"><a rel="top-month" href="#" title="{% trans "top of the month"|capfirst %}">{% trans "month"|capfirst %}</a></li>
+            </ol>
+{# cache 86400 sidebar_top_day #}
+<!-- Day -->
+{% if not day %}
+            <div id="top-day" class="top-list tab_toggle_content noresults">{% trans "No stories" %}</div>
+{% else %}
+            <div id="top-day" class="top-list tab_toggle_content">
+{% for story in day %}
+{% render_story_mini story %}
+{% endfor %}
+            </div>
+{% endif %}
+<!-- Week -->
+{% if not week %}
+            <div id="top-week" class="top-list tab_toggle_content noresults" style="display: none">{% trans "No stories" %}</div>
+{% else %}
+            <div id="top-week" class="top-list tab_toggle_content" style="display: none">
+{% for story in week %}
+{% render_story_mini story %}
+{% endfor %}
+            </div>
+{% endif %}
+<!-- Month -->
+{% if not month %}
+            <div id="top-month" class="top-list tab_toggle_content noresults" style="display: none">{% trans "No stories" %}</div>
+{% else %}
+            <div id="top-month" class="top-list tab_toggle_content" style="display: none">
+{% for story in month %}
+{% render_story_mini story %}
+{% endfor %}
+            </div>
+{% endif %}
+{# endcache #}
+        </div>

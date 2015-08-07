@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block css_ext %}
+    <link rel="stylesheet" href="{{ MEDIA_URL }}css/styles/{{ styles.user.title }}/forum.css" media="{{ styles.user.media }}">
+    <link type="text/css" rel="stylesheet" href="{{ MEDIA_URL }}forum/css/hljs_styles/djangobb.css" />
+	<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}forum/js/markitup/skins/markitup/style.css" />
+	<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}forum/js/markitup/sets/bbcode/style.css" />
+{% endblock %}
+{% block rss_ext %}
+	<link rel="alternate" type="application/atom+xml" href="{% url djangobb:forum_posts_feed %}" title="{% trans "Latest posts on forum" %}" />
+	<link rel="alternate" type="application/atom+xml" href="{% url djangobb:forum_topics_feed %}" title="{% trans "Latest topics on forum" %}" />
+{% endblock %}
+{% block js_ext %}
+	<script type="text/javascript">
+		var MEDIA_URL = "{{ MEDIA_URL }}";
+		var POST_PREVIEW_URL = "{% url djangobb:post_preview %}";
+	</script>
+	<script type="text/javascript" src="{{ MEDIA_URL }}forum/js/board.js"></script>
+	<script type="text/javascript" src="{{ MEDIA_URL }}forum/js/markitup/jquery.markitup.pack.js"></script>
+	<script type="text/javascript" src="{{ MEDIA_URL }}forum/js/markitup/sets/bbcode/set.js"></script>
+
+	<script type="text/javascript" >
+	   $(document).ready(function() {
+	        $(".bbcode").markItUp(mySettings);
+	    });
+	</script>
+
+    <!-- Highlightjs goodies -->
+	<script type="text/javascript" src="{{ MEDIA_URL }}forum/js/highlight.pack.js"></script>
+	<script type="text/javascript">
+		hljs.initHighlightingOnLoad();
+	</script>
+	{% if highlight_word %}
+		<script type="text/javascript" src="{{ MEDIA_URL }}forum/js/jquery.highlight-3.pack.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$("div.postmsg").highlight("{{ highlight_word }}");
+			});
+		</script>
+	{% endif %}
+	{% block extra_meta %}{% endblock %}
+{% endblock %}
+</head>
+<body>
+    <div id="djangobbwrap">
+        <div id="djangobbindex" class="djangobb">
+
+{% if forum_settings.NOTICE %}
+{% block announcements %}
+        <div class="announcement-message">
+			<p>{{ forum_settings.NOTICE }}</p>
+		</div>
+{% endblock %}
+{% endif %}
+			{% block controls %}{% endblock %}
+			{% block copyright %}Powered by K2 © 2010 Adelie Software. Forum powered by <a href="http://djangobb.org/">DjangoBB</a>{% endblock %}

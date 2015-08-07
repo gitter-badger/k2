@@ -1,0 +1,86 @@
+Python requirements:
+    dev-libs/geoip
+    dev-python/geoip-python (with GeoLiteCity.dat avail on http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz)
+    
+    simplejson
+    httplib2
+    BeautifulSoup
+    PIL
+    south
+    flup (for Django with FastCGI)
+    
+    django-openid
+    djangoembed
+    django-threadedcomments (repository version)
+    django-tagging
+    django-registration (repository version)
+    django-invitation (repository version, depends on django-registration)
+    django-google-analytics (repository version)
+    django-debug-toolbar (optional)
+    django-announcements
+    django-chronograph (repository version)
+    python-dateutil 1.5 (required by django-chronograph)
+    djangobb (repository version)
+    django-haystack (required by djangobb)
+    whoosh (required by djangobb)
+    django-authopenid (required by djangobb)
+    django-messages (optional with djangobb)
+
+    django-generic-aggregation (aggregation bug http://code.djangoproject.com/ticket/10870)
+
+Others:
+	geos
+	gdal
+
+Istallation:
+1\ Install requirements:
+    pip install simplejson httplib2 PIL south django-openid djangoembed \
+        BeautifulSoup django-threadedcomments django-tagging django-authopenid \
+        django-generic-aggregation django-announcements python-dateutil==1.5
+2\ Install other requirements manually:
+    cd <tmp dir>
+    a\ django-registration
+    hg clone http://bitbucket.org/ubernostrum/django-registration/
+    pip install ./django-registration/
+    b\ django-invitation
+    hg clone http://code.welldev.org/django-invitation/
+    pip install ./django-invitation/
+    c\ django-google-analytics
+    git clone http://github.com/clintecker/django-google-analytics.git
+    pip install ./django-google-analytics/
+    d\ django-haystack
+    git clone https://github.com/toastdriven/django-haystack.git
+    pip install ./django-haystack.git/
+    e\ whoosh
+    hg clone http://bitbucket.org/mchaput/whoosh
+    pip install ./whoosh/
+    f\ django-threadedcomments
+    git clone https://github.com/ericflo/django-threadedcomments.git
+    pip install ./django-threadedcomments
+    g\ django-messages
+    svn checkout http://django-messages.googlecode.com/svn/tags/messages-0.4.4/ django-messages
+    pip install ./django-messages
+    h\ djangobb
+    hg clone http://hg.djangobb.org/djangobb/ djangobb
+    cp -R djangobb/djangobb/djangobb_forum <site-packages>/djangobb_forum
+    i\ django-chronograph
+    hg clone http://bitbucket.org/wnielson/django-chronograph
+    pip install ./django-chronograph
+
+3\ Set permissions for static/avatars and all subdirectories
+
+4\ Set custom params in settings.py:
+    a\ basic:
+    DATABASE_* host, user etc. database access
+    GOOGLE_MAPS_KEY - API key for Google Maps
+    b\ for tracking app:
+    TRACKING_USE_GEOIP - show markers on map
+    GEOIP_DATA_FILE - absolute path of GeoIP.dat file
+    c\ for registration app:
+    ACCOUNT_ACTIVATION_DAYS - days confirmation key is valid
+    d\ for invitation app:
+    ACCOUNT_INVITATION_DAYS - days key is valid
+    INVITATIONS_PER_USER - invitations for one user
+
+Tips:
+    Turn KeepAlive Off on Django server (NOT for static files serving)

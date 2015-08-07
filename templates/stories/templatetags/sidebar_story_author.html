@@ -1,0 +1,11 @@
+{% load i18n %}
+        <div class="sidebox">
+            <h3 class="toggle">{% trans "Added by" %}</h3>
+            <div class="content author">
+                <p class="author_avatar"><a class="avatar meedium" href="{% url profiles:profile user.username %}"><img src="{{ user.profile.avatar.url_48x48 }}" alt="avatar {{ user.username }}"></a></p>
+                <p class="author_username"><a href="{% url profiles:profile user.username %}">{{ user }}</a></p>
+{% if user.profile.about %}
+                <p class="author_userinfo">{{ user.profile.about }}</p>
+{% endif %}
+            </div>
+        </div>

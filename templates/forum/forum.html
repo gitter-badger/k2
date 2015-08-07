@@ -1,0 +1,192 @@
+{% extends 'forum/base.html' %}
+{% load forum_extras %}
+{% load i18n %}
+
+{% block title %} / {{ forum.name }}{% endblock %}
+{% block content %}
+<div class="topic_controls">
+{% if user.is_authenticated %}
+    <ul class="topic_buttons">
+        <li><a accesskey="s" title="{% trans "New topic" %}" href="{% url djangobb:add_topic forum.id %}"><img alt="{% trans "New topic" %}" src="{{ MEDIA_URL }}img/forum/page_white_add.png"> {% trans "New topic" %}</a></li>
+    </ul>
+{% endif %}
+</div>
+
+<div class="category_block block_wrap">
+    <table cellspacing="0" id="forum_table" summary="Topics In This Forum &quot;A Test Forum&quot;" class="ipb_table topic_list">
+			<caption class="maintitle">
+				<span class="main_forum_title">A Test Forum</span><span class="desc"><a title="Mark this forum as read" href="http://live.skinbox.net/index.php?app=forums&amp;module=forums&amp;section=markasread&amp;marktype=forum&amp;forumid=2&amp;returntoforumid=2">(Mark this forum as read)</a></span></caption>
+			<tbody><tr class="header">
+				<th class="col_f_icon" scope="col">&nbsp;</th>
+				<th class="col_f_topic" scope="col">{% trans "Topic" %}</th>
+				<th class="col_f_starter short" scope="col">{% trans "Started By" %}</th>
+				<th class="col_f_views stats" scope="col">{% trans "Replies" %}/{% trans "Views" %}</th>
+				<th class="col_f_post" scope="col">{% trans "Last post" %}</th>
+				
+			</tr>	
+{% if topics %}
+    {% for topic in topics %}
+        {% if topic.sticky %}
+			<!-- STICKY -->
+            <tr id="arow_1" class="row2 announcement">
+                <td class="short altrow"><img alt="Announcement" src="http://live.skinbox.net/public/style_images/velvet-blue/t_announcement.png"></td>
+                <td colspan="4">
+                    <span class="topic_prefix">{% trans "Sticky" %}</span>&nbsp;{% link topic %}<br>
+                    <span class="desc">{% trans "by" %} <strong><a title="View Profile" href="{{ topic.user.get_absolute_url }}">{{ topic.user.username }}</a> &nbsp;<a title="View Profile" class="__user __id1 __fid2" href="{{ topic.user.get_absolute_url }}"><img alt="" src="{{ MEDIA_URL }}img/forum/user_popup.png"></a></strong></span>
+				</td>
+            </tr>
+        {% else %}
+			<!-- BEGIN TOPICS -->
+            <tr id="trow_490" class="row1">
+                <td class="short altrow">{% if topic|has_unreads:user %}<img alt="New Replies" src="{{ MEDIA_URL }}img/forum/t_unread.png">{% else %}<img alt="No New Replies" src="{{ MEDIA_URL }}img/forum/t_read.png">{% endif %}</td>
+				<td class="__topic __tid490" id="anonymous_element_3">
+				    <span class="topic_preview right"><a class="__tpopup" title="View topic preview" style="opacity: 0.3; cursor: pointer; display: none;" id="tidPop_490" href="#"><img alt="" src="http://live.skinbox.net/public/style_images/velvet-blue/topicpreview.png"></a></span>
+				    {% if topic|has_unreads:user %}
+                    <a title="Go to first unread post" href="http://live.skinbox.net/index.php?/topic/490-looking-good/page__view__getnewpost"><img title="Go to first unread post" alt="Icon" src="http://live.skinbox.net/public/style_images/velvet-blue/new_post.png"></a>{% endif %} 
+                    {% link topic %}
+                </td>
+				<td class="short altrow"><a href="{{ topic.user.get_absolute_url }}" class="_hovertrigger" hovercard-id="{{ topic.user.id }}" hovercard-ref="member">{{ topic.user.username }}</a>&nbsp;<a title="View Profile" class="__user __id353 __fid2" href="{{ topic.user.get_absolute_url }}"><img alt="" src="http://live.skinbox.net/public/style_images/velvet-blue/user_popup.png"></a></td>
+				<td class="stats">
+				    <ul>
+                        <li>
+                        <!-- SKINNOTE: This is the link for the "who posted" ajax popup   -->
+                            <a onclick="return ipb.forums.retrieveWhoPosted( 490 );" href="http://live.skinbox.net/index.php?app=forums&amp;module=extras&amp;section=stats&amp;do=who&amp;t=490">{{ topic.reply_count }}</a> Replies
+				        </li>
+                        <li class="views desc">{{ topic.views }} Views</li>
+                    </ul>
+				</td>
+				<td class="altrow">
+				    <ul class="last_post">
+				        <li>
+				            <a title="Go to last post" href="{{ topic.last_post.get_absolute_url }}"><img title="View last post" alt="Icon" src="http://live.skinbox.net/public/style_images/velvet-blue/last_post.png"></a> <a title="Go to last post" href="{{ topic.last_post.get_absolute_url }}">{% forum_time topic.updated %}</a>
+				        </li>
+				        <li>{% trans "by" %}: <a href="{{ topic.last_post.user.get_absolute_url }}" class="_hovertrigger" hovercard-id="{{ topic.last_post.user.id }}" hovercard-ref="member">{{ topic.last_post.user.username }}</a>&nbsp;<a title="View Profile" class="__user __id78 __fid2" href="{{ topic.last_post.user.get_absolute_url }}"><img alt="" src="http://live.skinbox.net/public/style_images/velvet-blue/user_popup.png"></a></li>
+				    </ul>
+                </td>
+            </tr>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+    </table>
+</div>
+
+<div class="statistics general_box clear clearfix" id="forum_footer">
+    <div class="right" id="forum_legend">
+		<h2>{% trans "Legend" %}</h2>
+		<dl>
+			<dt class="clear"><img alt="New Replies" src="{{ MEDIA_URL }}img/forum/t_unread.png"></dt>
+			<dd>{% trans "New Replies" %}</dd>
+			<dt><img alt="No New Replies" src="{{ MEDIA_URL }}img/forum/t_read.png"></dt>
+			<dd>{% trans "No New Replies" %}</dd>
+			<dt><img alt="Hot Topic (New)" src="{{ MEDIA_URL }}img/forum/t_hot_unread.png"></dt>
+			<dd>{% trans "Hot Topic (New)" %}</dd>
+			<dt><img alt="Hot Topic (No New)" src="{{ MEDIA_URL }}img/forum/t_hot_read.png"></dt>
+			<dd>{% trans "Hot Topic (No New)" %}</dd>
+			<dt class="clear"><img alt="Poll (New)" src="{{ MEDIA_URL }}img/forum/t_poll_unread.png"></dt>
+			<dd>{% trans "Poll (New)" %}</dd>
+			<dt><img alt="Poll (No New)" src="{{ MEDIA_URL }}img/forum/t_poll_read.png"></dt>
+			<dd>{% trans "Poll (No New)" %}</dd>
+			<dt><img alt="Locked Topic" src="{{ MEDIA_URL }}img/forum/t_closed.png"></dt>
+			<dd>{% trans "Locked Topic" %}</dd>
+			<dt><img alt="Moved Topic" src="{{ MEDIA_URL }}img/forum/t_moved.png"></dt>
+			<dd>{% trans "Moved Topic" %}</dd>
+		</dl>
+	</div>		
+</div>
+
+<div class="linkst">
+	<div class="inbox">
+		<p class="pagelink conl">{% pagination %}</p>
+		{% if user.is_authenticated %}
+			<p class="postlink conr"><a href="{% url djangobb:add_topic forum.id %}">{% trans "New topic" %}</a></p>
+		{% endif %}
+		<ul><li><a href="{% url djangobb:index %}">{% trans "Root" %}</a> </li><li>&raquo; {{ forum.name }}</li></ul>
+		<div class="clearer"></div>
+	</div>
+</div>
+<div id="vf" class="blocktable">
+	<h2>
+		<a href="{% url djangobb:forum_forum_feed forum.id %}"><img src="{{ MEDIA_URL }}img/forum/feed-icon-small.png"  alt="[RSS Feed]" title="[RSS Feed]" class="rss" /></a>
+		<b><span>{{ forum.name }}</span></b>
+	</h2>
+	<div class="box">
+		<div class="inbox">
+			<table cellspacing="0">
+			<thead>
+				<tr>
+					<th class="tcl" scope="col">{% trans "Topic" %}</th>
+					<th class="tc2" scope="col">{% trans "Replies" %}</th>
+					<th class="tc3" scope="col">{% trans "Views" %}</th>
+					<th class="tcr" scope="col">{% trans "Last post" %}</th>
+				</tr>
+			</thead>
+			<tbody>
+			{% if topics %}
+				{% for topic in topics %}
+					<tr>
+						<td class="tcl">
+							<div class="intd">
+								<div {% if topic.sticky %}class="sticky"{% else %}{% if topic.closed %}class="closed"{% else %}{% if topic|has_unreads:user %}class="inew"{% else %}class="icon"{% endif %}{% endif %}{% endif %}><div class="nosize"><!-- --></div></div>
+								<div class="tclcon">
+									{% if topic.sticky %}
+										{% trans "Sticky:" %}
+									{% endif %}
+									{% if topic|has_unreads:user %}
+										<strong>{% link topic %} <span class="byuser">{% trans "by" %} {{ topic.user.username }}</span></strong>
+									{% else %}
+										{% link topic %} <span class="byuser">{% trans "by" %} {{ topic.user.username }}</span>
+									{% endif %}
+								</div>
+							</div>
+						</td>
+						<td class="tc2">{{ topic.reply_count }}</td>
+						<td class="tc3">{{ topic.views }}</td>
+						<td class="tcr"><a href="{{ topic.get_absolute_url }}">{% forum_time topic.updated %}</a> <span class="byuser">{% trans "by" %} {{ topic.last_post.user.username }}</span></td>
+					</tr>
+				{% endfor %}
+			{% else %}
+				<tr><td class="djangobbcon1" colspan="4">{% trans "Forum is empty." %}</td></tr>
+			{% endif %}
+			</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<div class="linkst">
+	<div class="inbox">
+		<p class="pagelink conl">{% pagination %}</p>
+		{% if user.is_authenticated %}
+			<p class="postlink conr"><a href="{% url djangobb:add_topic forum.id %}">{% trans "New topic" %}</a></p>
+		{% endif %}
+		<ul><li><a href="{% url djangobb:index %}">{% trans "Root" %}</a> </li><li>&raquo; {{ forum.name }}</li></ul>
+		<div class="clearer"></div>
+	</div>
+</div>
+{% if forum_settings.LOFI_SUPPORT %}
+    <div class="filter_bar rounded" id="forum_filter">
+        <a href="{{ forum.get_absolute_url }}lofi/">Lo-Fi Version</a>
+	</div>
+{% endif %}
+{% endblock %}
+{% block controls %}
+<div class="conl">
+	<form id="qjump" method="get" action="forum">
+		<div><label>{% trans "Jump to" %}
+		<br />
+		<select name="id" id="forum_id" onchange="window.location=('{% url djangobb:index %}'+this.options[this.selectedIndex].value)">
+			{% for category in categories %}
+				<optgroup label="{{ category }}">
+					{% for forum in category.forums.all %}
+						<option value="{{ forum.id }}">{{ forum.name }}</option>
+					{% endfor %}
+				</optgroup>
+			{% endfor %}
+		</select>
+		<input type="button" onclick="window.location=('{% url djangobb:index %}'+getElementById('forum_id').value)" value=" {% trans "Go" %} " accesskey="g" />
+		</label></div>
+	</form>
+	{% if moderator %}
+		<p id="modcontrols"><a href="{% url djangobb:moderate forum.id %}">{% trans "Moderate forum" %}</a></p>
+	{% endif %}
+</div>
+{% endblock %}

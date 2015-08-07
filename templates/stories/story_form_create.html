@@ -1,0 +1,11 @@
+{% extends "stories/story_form.html" %}
+
+{% load i18n %}
+
+{% block title %} - {% trans "add new story"|capfirst %}{% endblock %}
+
+{% block form_title %}{% trans "add new story"|capfirst %}{% endblock %}
+
+{% block form_desc %}{% blocktrans %}Interesting content and good title will guarantee success for your story.{% endblocktrans %}{% endblock %}
+
+{% block form_button %}{% trans "add new story"|capfirst %} &#43;{% endblock %}

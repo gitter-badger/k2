@@ -1,0 +1,17 @@
+{% load i18n %}
+{% load markup %}
+            <article id="comment-{{ comment.id }}" class="comment_block no_avatar">
+                <h3 id="comment-head-{{ comment.id }}" class="comment_head{% if score.score > 9 %} highlight{% endif %}">
+                    <time class="comment_date grayed" title="{{ comment.date_submitted }}">{{ comment.submit_date|timesince }} {% trans "ago" %}</time>
+                </h3>
+
+                <div id="comment-content-{{ comment.id }}" class="comment_content">
+                    <div id="comment-text-{{ comment.id }}" class="comment_text{% if observing.last_seen < comment.date_modified %} notseen{% endif %}">
+                        {{ comment.comment|markdown }}
+                    </div>
+
+                </div>
+                <div id="comment-links-{{ comment.id }}" class="comment_links">
+                    <a class="comment_id_link" href="#comment-{{ comment.id }}" title="{% trans "Permalink" %}"><span>{% trans "Permalink" %}</span></a>
+                </div>
+            </article>

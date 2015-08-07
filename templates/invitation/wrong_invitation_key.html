@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block title %} - {% trans "register"|capfirst %}{% endblock %}
+
+{% block content %}
+        <div id="center">
+            <div id="static">
+                <h2 class="page-title">{% trans "register"|capfirst %}</h2>
+                <p>{% trans "Invalid invitation code! You must have valid invitation code to register. Enter your invitation code:" %}</p>
+                <form class="register_code" action="{% url profiles:registration_register %}" method="get">
+                    <div class="form-row">
+                        <p><input type="text" name="invitation_key" size="40" /></p>
+                    </div>
+                    <div class="submit-row">
+                        <input type="submit" value="{% trans "Next" %}" class="input_submit" />
+                    </div>
+                </form>
+            </div>
+        </div>
+{% endblock %}

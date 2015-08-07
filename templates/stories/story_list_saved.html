@@ -1,0 +1,33 @@
+{% extends "stories/story_list.html" %}
+
+{% load i18n %}
+{% load userpref_tags %}
+
+{% block rss %}
+    <link rel="alternate" type="application/rss+xml" title="{{ site }} - Popularne" href="/rss/popularne/">
+    <link rel="alternate" type="application/rss+xml" title="{{ site }} - Najnowsze komentarze" href="/rss/komentarze/">
+{% endblock %}
+
+{% block tabs %}
+            <ul class="tabs no_title mini">
+                <li><a href="{% if category %}{% url stories:popular_category_list category.slug %}{% else %}{% url stories:popular_story_list %}{% endif %}">{% trans "popular"|capfirst %}</a></li>
+                <li><a href="{% if category %}{% url stories:upcoming_category_list category.slug %}{% else %}{% url stories:upcoming_story_list %}{% endif %}">{% trans "upcoming"|capfirst %}</a></li>
+                <li class="active"><a href="">{% trans "saved"|capfirst %}</a></li>
+            </ul>
+{% endblock %}
+
+{% block paginator %}
+{% if has_previous or has_next %}
+    <ul class="pagination">
+        {% if has_previous %}
+        <li><a title="{% trans "Previous page" %}" href="{% url stories:upcoming_story_list %}?page={{ previous }}">&laquo;</a></li>
+        {% endif %}
+        {% for page in page_range %}
+        <li{% ifequal page page_obj.number %} class="active">{{ page }}{% else %}><a title="{% blocktrans %}Page {{ page }}{% endblocktrans %}" href="{% url stories:upcoming_story_list %}?page={{ page }}">{{ page }}</a>{% endifequal %}</li>
+        {% endfor %}
+        {% if has_next %}
+        <li><a title="{% trans "Next page" %}" href="{% url stories:upcoming_story_list %}?page={{ next }}">&raquo;</a></li>
+        {% endif %}
+    </ul>
+{% endif %}
+{% endblock %}

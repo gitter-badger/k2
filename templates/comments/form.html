@@ -1,0 +1,67 @@
+{% load comments i18n %}
+<form id="add_comment_form" action="/komentarze/dodaj/" method="post">{% csrf_token %}
+    <fieldset class="aligned wide">
+        <h3 class="bar">{% trans "Enter your comment text" %}</h3>
+        <div id="creply" style="display:none;">Odpowiadasz na komentarz napisany przez <span id="replynick"></span> (<a href="javascript:replycancel();">anuluj</a>)</div>
+        <input type="hidden" name="next" value="{{ object.get_absolute_url }}" />
+{% for field in form %}
+    {% if field.is_hidden %}
+        {{ field }}
+    {% else %}
+        {% if field.errors %}{{ field.errors }}{% endif %}
+        <div class="form-row"{% if field.errors %} class="error"{% endif %}{% ifequal field.name "honeypot" %} style="display:none;"{% endifequal %}>
+            {{ field }}
+            <p class="help">{% blocktrans %}Markdown formatting: <em>*italic*</em> <strong>**bold**</strong> &lt;http://example.com&gt;. See <a rel="formatting" href="http://daringfireball.net/projects/markdown/syntax">more here</a>{% endblocktrans %}</p>
+        </div>
+    {% endif %}
+{% endfor %}
+		<div id="formatting" style="display: none">
+			<h3 class="bar">{% trans "Text formatting" %}</h3>
+	        <table>
+	        	<thead>
+	        		<tr>
+	        			<th>Jak napiszesz</th>
+	        			<th>to zobaczysz</th>
+	        		</tr>
+	        	</thead>
+	        	<tbody>
+	        		<tr>
+	        			<td>*italics*</td>
+	        			<td><em>italics</em></td>
+	        		</tr>
+	        		<tr>
+	        			<td>**bold**</td>
+	        			<td><strong>bold</strong></td>
+	        		</tr>
+	        		<tr>
+	        			<td>&lt;http://example.com&gt;</td>
+	        			<td><a rel="nofollow" href="http://example.com">http://example.com</a></td>
+	        		</tr>
+	        		<tr>
+	        			<td>[example](http://example.com)</td>
+	        			<td><a rel="nofollow" href="http://example.com">example.com</a></td>
+	        		</tr>
+	        		<tr>
+	        			<td>&gt; first level of quoting<br>&gt; &gt; nested blockquote</td>
+	        			<td><blockquote>first level of quoting<br><blockquote>nested blockquote</blockquote></blockquote></td>
+	        		</tr>
+	        		<tr>
+	        			<td> &nbsp; &nbsp;code block</td>
+	        			<td><pre>code block</pre></td>
+	        		</tr>
+	        		<tr>
+	        			<td>*****<br>---------------------------------------</td>
+	        			<td><hr><br><hr></td>
+	        		</tr>
+	        		<tr>
+	        			<td>* &nbsp; uno<br><br>* &nbsp; dos</td>
+	        			<td><ul><li><p>uno</p></li><li><p>dos</p></li></ul></td>
+	        		</tr>
+	        	</tbody>
+	        </table>
+		</div>
+        <div class="submit-row">
+            <input type="submit" name="post" class="submit-post" value="{% trans "Send" %}" />
+        </div>
+    </fieldset>
+</form>

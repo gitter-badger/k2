@@ -1,0 +1,82 @@
+{% extends "registration/base.html" %}
+
+{% load i18n %}
+
+{% block title %} - {% trans "register"|capfirst %}{% endblock %}
+
+{% block content %}
+        <aside class="sidebox">
+            <h3>Why register?</h3>
+            <p>Here's some great reasons to sign up!</p>
+            <ul>
+                <li>vote on others' content (links, comments)</li>
+                <li>add own content (links, comments)</li>
+                <li>communicate with other users (chat, private messages)</li>
+            </ul>
+            <h3>{% trans "Already a member?" %}</h3>
+            <p>{% blocktrans %}If you already have an account, you can go directly to the sign in page.{% endblocktrans %}</p>
+            <p style="text-align: center;"><a href="{% url profiles:login %}">{% trans "Sign in"%}</a></p>
+        </aside>
+        <section id="static-page">
+                <h2 class="page-title">{% trans "Create an account" %}</h2>
+                <p>{% blocktrans %}It's free and simple to register for our site! We just need a few pieces of information from you, and you'll be ready to go in no time!{% endblocktrans %}</p>
+                <form class="register" method="post" action="">
+                    {% csrf_token %}
+                    <fieldset class="aligned wide">
+                        <h3 class="bar">{% trans "Account Information" %}</h3>
+                        <div class="form-row">
+{% if form.username.errors %}{% for error in form.username.errors %}
+                            <p class="error">{{ error }}</p>
+{% endfor %}{% endif %}
+                            {{ form.username.label_tag }}
+                            {{ form.username }}
+                            <p class="help">{% trans "Required. 30 characters or fewer. Letters, numbers and @/./+/-/_ characters" %}</p>
+                        </div>
+                        <div class="form-row">
+{% if form.email.errors %}{% for error in form.email.errors %}
+                            <p class="error">{{ error }}</p>
+{% endfor %}{% endif %}
+                            {{ form.email.label_tag }}
+                            {{ form.email }}
+                        </div>
+                        <div class="form-row">
+{% if form.password1.errors %}{% for error in form.password1.errors %}
+                            <p class="error">{{ error }}</p>
+{% endfor %}{% endif %}
+                            {{ form.password1.label_tag }}
+                            {{ form.password1 }}
+                        </div>
+                        <div class="form-row">
+{% if form.password2.errors %}{% for error in form.password2.errors %}
+                            <p class="error">{{ error }}</p>
+{% endfor %}{% endif %}
+                            {{ form.password2.label_tag }}
+                            {{ form.password2 }}
+                            <p class="help">{% trans "Enter the same password as above, for verification." %}</p>
+                        </div>
+                        <div class="form-row checkbox">
+{% if form.tos.errors %}{% for error in form.tos.errors %}
+                            <p class="error">{{ error }}</p>
+{% endfor %}{% endif %}
+                            {{ form.tos }}
+                            {{ form.tos.label_tag }}
+                        </div>
+                    </fieldset>
+                    <div class="submit-row">
+                        <input type="submit" value="{% trans "register"|capfirst %} &rarr;" />
+                    </div>
+                </form>
+        </section>
+{% endblock %}
+
+{% block content-related %}
+<p>Fill out the form to the left (all fields are required), and your
+account will be created; you'll be sent an email with instructions on how
+to finish your registration.</p>
+
+<p>We'll only use your email to send you signup instructions. We hate spam
+as much as you do.</p>
+
+<p>This account will let you log into the ticket tracker, claim tickets,
+and be exempt from spam filtering.</p>
+{% endblock %}

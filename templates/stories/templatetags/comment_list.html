@@ -1,0 +1,12 @@
+{% load i18n %}
+{% load threadedcommentstags %}
+{% load story_tags %}
+            <div class="comments">
+                <div id="comments_links">
+                    <a id="comments_dug_link" href="#" title="Zminusowane komentarze"><span>Pokaż zminusowane</span></a>
+                    <a id="comments_red_link" href="#" title="Przeczytane komentarze"><span>Ukryj przeczytane<span></a>
+                </div>
+{% for comment in tree %}
+{% comment_detail comment observing %}
+{% endfor %}
+            </div>

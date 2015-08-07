@@ -1,0 +1,12 @@
+{% load i18n %}
+                <ul class="tabs no_title mini" id="custom_sort">
+                    <li{% if sort == 2 %} class="active"{% endif %}>
+                        <a title="{% trans "sort by newest"|capfirst %}" href="?{{ list_type }}_sort=2"><span>{% trans "newest" %}</span></a>
+                    </li>
+                    <li{% if sort == 1 %} class="active"{% endif %}>
+                        <a title="{% trans "sort by popular"|capfirst %}" href="?{{ list_type }}_sort=1"><span>{% trans "popular" %}</span></a>
+                    </li>
+                    <li{% if sort == 3 %} class="active"{% endif %}>
+                        <a title="{% trans "sort by commented"|capfirst %}" href="?{{ list_type }}_sort=3"><span>{% trans "commented" %}</span></a>
+                    </li>
+                </ul>

@@ -1,0 +1,85 @@
+{% extends "profiles/base.html" %}
+
+{% load i18n %}
+{% load profile_tags %}
+
+{% block title %} - {% trans "user profile"|capfirst %} {{ profile.user.username }}{% endblock %}
+
+{% block content %}
+    <h2 class="maintitle">{% blocktrans with profile.user.username|capfirst as username %}{{ username  }}'s Profile{% endblocktrans %}</h2>
+    <aside id="profile_overview" class="sidebox">
+        <img class="photo avatar large" src="{{ profile.avatar.url_64x64 }}">
+{% if request.user == profile.user %}
+{% else %}
+        <ul id="profile_links">
+            <li><a href="#">{% trans "send message"|capfirst %}</a></li>
+        </ul>
+{% endif %}
+        <div class="reputation new">
+            <span class="number">{% trans "reputation"|capfirst %}: 0</span>
+            <span class="title">{{ profile.get_userclass_display }}</span>
+        </div>
+        <dl class="userinfo">
+{% if profile.user.groups.all %}
+            <dt>{% trans "groups"|capfirst %}:</dt>
+            <dd>{% for group in profile.user.groups.all %}{{ group }} {% endfor %}{% else %}{% trans "no groups"|capfirst %}</dd>
+{% endif %}
+            <dt>{% trans "date joined"|capfirst %}:</dt>
+            <dd>{{ profile.user.date_joined }}</dd>
+            <dt>{% trans "last login"|capfirst %}:</dt>
+            <dd>{{ profile.user.last_login }}</dd>
+        </dl>
+{% if profile.about %}
+        <h3 class="bar">{% trans "About Me"%}</h3>
+        <p>{{ profile.about }}</p>
+{% endif %}
+        <h3 class="bar">My Information</h3>
+        <dl class="userinfo">
+            <dt>{% trans "location"|capfirst %}:</dt>
+            <dd>{{ profile.location }}</dd>
+            <dt>{% trans "gender"|capfirst %}:</dt>
+            <dd>{{ profile.gender|gender }}</dd>
+        </dl>
+        <h3 class="bar">Contact Information</h3>
+        <dl class="userinfo">
+            <dt>{% trans "E-mail address" %}:</dt>
+            <dd>{% if profile.email_show or user.is_moderator %}<a href="mailto:{{ profile.email }}" title="Adres e-mail użytkownika {{ profile.user.username }}">{{ profile.user.email }}</a>{% else %}<i>{% trans "private"|capfirst %}</i>{% endif %}</dd>
+            <dt>{% trans "Website" %}:</dt>
+            <dd>{% if profile.website %}<a rel="nofollow" href="{{ profile.website }}" title="Strona www użytkownika {{ profile.user.username }}">{{ profile.website }}</a>{% else %}<i>{% trans "no website"|capfirst %}</i>{% endif %}</dd>
+            <dt>{% trans "Jabber ID" %}:</dt>
+            <dd>{% if profile.jabber %}<a href="xmpp://{{ profile.jabber }}" title="Adres Jabber/Xmpp użytkownika {{ profile.user.username }}">{{ profile.jabber }}</a>{% else %}<i>{% trans "no jabber"|capfirst %}</i>{% endif %}</dd>
+            <dt>{% trans "Gadu-Gadu"|capfirst %}:</dt>
+            <dd>{% if profile.gg %}<a href="gg://{{ profile.gg }}" title="Numer Gadu-Gadu użytkownika {{ profile.user.username }}">{{ profile.gg }}</a>{% else %}<i>{% trans "no gg"|capfirst %}</i>{% endif %}</dd>
+        </dl>
+    </aside>
+    <div id="left"> 
+{% if user.is_banned %}
+        <h2 style="color: #B2B2B2; border: 1px dotted #B2B2B2">{% trans "user banned"|capfirst %}</h2>
+{% endif %}
+{% block tab %}
+         <ul class="tabs no_title mini">
+            <li class="active"><a href="{% url profiles:profile profile.user.username %}">{% trans "digs"|capfirst %}</a></li>
+            <li><a href="{% url profiles:profile_stories profile.user.username %}">{% trans "added"|capfirst %}</a></li>
+            <li><a href="{% url profiles:profile_comments profile.user.username %}">{% trans "comments"|capfirst %}</a></li>
+{% if user.is_moderator %}
+            <li><a href="{% url profiles:profile_invites profile.user.username %}">{% trans "invited users"|capfirst %}</a></li>
+{% endif %}
+        </ul>
+{% endblock %}
+{% block paginator %}
+{% if has_previous or has_next %}
+    <ul class="pagination">
+        {% if has_previous %}
+        <li><a title="{% trans "Previous page" %}" href="?page={{ previous }}">&laquo;</a></li>
+        {% endif %}
+        {% for page in page_range %}
+        <li{% ifequal page page_obj.number %} class="active">{{ page }}{% else %}><a title="{% blocktrans %}Page {{ page }}{% endblocktrans %}" href="?page={{ page }}">{{ page }}</a>{% endifequal %}</li>
+        {% endfor %}
+        {% if has_next %}
+        <li><a title="{% trans "Next page" %}" href="?page={{ next }}">&raquo;</a></li>
+        {% endif %}
+    </ul>
+{% endif %}
+{% endblock %}
+    </div>
+{% endblock %}

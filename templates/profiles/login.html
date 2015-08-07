@@ -1,0 +1,57 @@
+{% extends "profiles/base.html" %}
+
+{% load i18n %}
+
+{% block title %} - {% trans "Log in" %}{% endblock %}
+
+{% block userpanel %}{% endblock %}
+
+{% block content %}
+    <aside class="sidebox">
+        <h3>Not a member?</h3>
+        <p>If you aren't a member yet, it only takes a couple of minutes to register! Members get these benefits and more! </p>
+        <ul>
+            <li>vote on others' content (links, comments)</li>
+            <li>add own content (links, comments)</li>
+            <li>communicate with other users (chat, private messages)</li>
+        </ul>
+        <p style="text-align: center;"><a href="{% url profiles:registration_register %}">{% trans "Register Now" %}</a>
+        </p>
+    </aside>
+    <section id="static-page">
+            <h2 class="page-title">{% trans "Log in"|capfirst %}</h2>
+{% if form.errors %}{% for error in form.non_field_errors %}
+            <p class="error"> {{ error }}</p>
+{% endfor %}{% endif %}
+{% for field in form.fields %}{% if field.errors %}{% for error in field.errors %}
+            <p class="error"> {{ error }}</p>
+{% endfor %}{% endif %}{% endfor %}
+            <form class="login_form" method="post" action="{% url profiles:login %}">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ next }}" />
+                <fieldset class="aligned wide">
+                    <h3 class="bar">{% trans "Enter your sign in name and password" %}</h3>
+                    <div class="form-row">
+{% if form.username.errors %}{% for error in form.username.errors %}
+                        <p class="error">{{ error }}</p>
+{% endfor %}{% endif %}
+                        {{ form.username.label_tag }}
+                        {{ form.username }}
+                    </div>
+                    <div class="form-row">
+{% if form.password.errors %}{% for error in form.password.errors %}
+                        <p class="error">{{ error }}</p>
+{% endfor %}{% endif %}
+                        {{ form.password.label_tag }}
+                        {{ form.password }}
+                        <p class="help"><a href="#">{% trans "I've forgotten my password" %}</a></p>
+
+                    </div>
+                    <div class="submit-row">
+                        <input type="submit" value="{% trans "Log in" %} &rarr;" />
+                    </div>
+                </fieldset>
+            </form>
+            <div style="clear:left"></div>
+    </section>
+{% endblock %}

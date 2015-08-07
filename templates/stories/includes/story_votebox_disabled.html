@@ -1,0 +1,6 @@
+{% load i18n %}
+{% load voting_tags %}
+{% score_for_object story as score %}
+                <div class="sidebox votebox">
+                    <div class="score positive" id="story_{{ story.id }}">{{ score.positive_num_votes }} <span>{% blocktrans count score.positive_num_votes as votes %}vote{% plural %}votes{% endblocktrans %}</span></div>
+                </div>

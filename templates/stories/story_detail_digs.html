@@ -1,0 +1,36 @@
+{% extends "stories/story_detail.html" %}
+
+{% load i18n %}
+{% load extra_voting_tags %}
+
+{% block title %} - {{ story.title }} - {% trans "Positive votes" %}{% endblock %}
+
+{% block tabs %}
+        <ul class="tabs">
+            <li>
+                <a href="{% url stories:story_slug story.id story.slug %}">Komentarze ({{ comment_count }})</a>
+            </li>
+            <li>
+                <a href="{% url stories:references_slug story.id story.slug %}">Powiązane linki ({{ story.references.count }})</a>
+            </li>
+            <li class="active">
+                <a href="{% url stories:digs_slug story.id story.slug %}">Głosowali za ({{ score.positive_num_votes }})</a>
+            </li>
+            <li>
+                <a href="{% url stories:buries_slug story.id story.slug %}">Głosowali przeciw ({{ score.negative_num_votes }})</a>
+            </li>
+        </ul>
+{% endblock %}
+
+{% block story_content %}
+{% positive_votes_for_object story as votes %}
+		<div id="story_content">
+            <div class="dugg">
+                <ul>
+{% for vote in votes %}
+				<li><span title="{% blocktrans with vote.date_modified as date %} Voted on {{ date }}{% endblocktrans %}"><img src="{{ vote.user.profile.avatar.url_16x16 }}"> <a class="user {DUGG.user_class}" href="{% url profiles:profile vote.user.username %}">{{ vote.user.username }}</a></span></li>
+{% endfor %}
+			</ul>
+		</div>
+		</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load nav %}
+
+{% block content %}
+    <aside class="sidebox">
+        <h3>Szukasz kontaktu?</h3>
+        <p>Klid jest społecznością i istnieje wiele jako takich miejsc gdzie możesz uzyskać pomoc:</p>
+        <ul>
+            <li>odwiedź nasz <a href="#">czat</a></li>
+            <li>wejdź na <a href="#">fanpage na Facebook'u</a></li>
+            <li>dodaj swój pomysł jako link w kategorii <a href="/pomysly/">Pomysły</a></li>
+            <li>napisz o swoich problemach ze stroną w kategorii <a href="/problemy/">Problemy</a></li>
+            <li>odwiedź kanał irc <a href="http://pirc.pl/bramka/klid/{% if request.user.is_authenticated %}{{ request.user }}{% else %}nick_z_klid{% endif %}/ajax">#klid</a> na pirc.pl</li>
+            <li>skorzystaj z formularza na tej stronie</li>
+        </ul>
+    </aside>
+    <section id="static-page">
+        <h2 class="page-title">{% trans "Contact" %}</h2>
+        <p>Wiadomość została wysłana.</p>
+    </section>
+{% endblock %}
+
+{% block pages %}
+{% nav "ranking" %}
+{{ block.super }}
+{% endblock %}

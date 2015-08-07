@@ -1,0 +1,71 @@
+{% extends "settings.html" %}
+
+{% load i18n %}
+
+{% block js_ext %}
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#id_style').change(function(){
+        var styleName = $("option:selected", $(this)).text();
+        $('link[@rel*=style][title]').each(function(i) {
+            if (this.getAttribute('title') != 'general') this.disabled = true;
+            if (this.getAttribute('title') == styleName) this.disabled = false;
+        });
+    });
+});
+</script>
+{% endblock %}
+
+{% block content %}
+    <aside class="sidebox">
+        <h3>What is this about?</h3>
+        <p>Dzięki arkuszom styli CSS możesz udekorować stronę na swój sposób, tak jak ty tego chcesz i jak będzie ci najbardziej pasować. Dajemy Ci możliwość wybory odpowiedniego stylu dla siebie. Dodatkowo masz możliwość zdefiniowania drugiego stylu (tryb nocny) przy nocnym przeglądaniu naszej strony.</p>
+        <h3>Want share your own?</h3>
+        <p>Jesteśmy otwarci na nowe style od Was. Wyślij do nas swój styl (patrz strona Kontakt), a my go tu umieścimy, gdzie każdy będzie mógł podziwiać i skorzystać z Twojej pracy.</p>
+    </aside>
+        <section id="static-page">
+            <h2 class="page-title">{% trans "user settings"|capfirst %}</h2>
+
+            <ul class="tabs">
+                <li><a href="{% url stories:update_userpref %}">{% trans "settings"|capfirst %}</a></li>
+                <li><a href="{% url profiles:update_profile %}">{% trans "profile"|capfirst %}</a></li>
+                <li><a href="{% url profiles:update_avatar %}">{% trans "avatar"|capfirst %}</a></li>
+                <li class="active"><a href="{% url styles:update_userstyle %}">{% trans "styles"|capfirst %}</a></li>
+                <li><a href="{% url profiles:password_change %}">{% trans "password"|capfirst %}</a></li>
+            </ul>
+
+            <form class="edit_profile" method="post" action="">
+                {% csrf_token %}
+                <fieldset class="aligned wide">
+                <div class="form-row">
+{% if form.max_width.errors %}{% for error in form.max_width.errors %}
+                    <p class="error" id="title_error">{{ error }}</p>
+{% endfor %}{% endif %}
+                    {{ form.max_width.label_tag }} {{ form.max_width }}
+                    <small>{{ form.max_width.help_text }}</small>
+                </div>
+                <div class="form-row">
+{% if form.style.errors %}{% for error in form.style.errors %}
+                    <p class="error" id="title_error">{{ error }}</p>
+{% endfor %}{% endif %}
+                    {{ form.style.label_tag }} {{ form.style }}
+                </div>
+                <div class="form-row">
+{% if form.night_style.errors %}{% for error in form.night_style.errors %}
+                    <p class="error" id="title_error">{{ error }}</p>
+{% endfor %}{% endif %}
+                    {{ form.night_style.label_tag }} {{ form.night_style }}
+                </div>
+                <div class="form-row">
+{% if form.style.errors %}{% for error in form.style.errors %}
+                    <p class="error" id="title_error">{{ error }}</p>
+{% endfor %}{% endif %}
+                    <label>{% trans "Night style range" %}</label> {{ form.night_style_from }} - {{ form.night_style_to }}
+                </div>
+                <div class="submit-row">
+                    <input class="input_submit" type="submit" name="Submit" value="{% trans "Save" %}">
+                </div>
+                </fieldset>
+            </form>
+        </section>
+{% endblock %}

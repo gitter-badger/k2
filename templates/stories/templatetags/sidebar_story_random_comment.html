@@ -1,0 +1,9 @@
+{% load story_tags %}
+{% if comment %}
+        <div class="sidebox">
+            <h3 class="toggle">Czy wiesz, że...</h3>
+            <div class="content comments">
+                {% comment_detail_simple comment observing %}
+            </div>
+        </div>
+{% endif %}

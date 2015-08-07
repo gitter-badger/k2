@@ -1,0 +1,78 @@
+{% extends "profiles/base.html" %}
+
+{% load i18n %}
+{% load nav %}
+
+{% block title %} - {% trans "users"|capfirst %}{% endblock %}
+
+{% block content %}
+    <div id="center">
+        <div id="static">
+            <h2 class="page-title">{% trans "users"|capfirst %}</h2>
+            <p>Lista użytkowników, którzy wykazali się najwyższą aktywnością na stronie.</p>
+            
+{% block upper_paginator %}
+{% if has_previous or has_next %}
+    <ul class="pagination">
+        {% if has_previous %}
+        <li><a title="{% trans "Previous page" %}" href="{% url profiles:profile_list %}?page={{ previous }}">&laquo;</a></li>
+        {% endif %}
+        {% for page in page_range %}
+        <li{% ifequal page page_obj.number %} class="active">{{ page }}{% else %}><a title="{% blocktrans %}Page {{ page }}{% endblocktrans %}" href="{% url profiles:profile_list %}?page={{ page }}">{{ page }}</a>{% endifequal %}</li>
+        {% endfor %}
+        {% if has_next %}
+        <li><a title="{% trans "Next page" %}" href="{% url profiles:profile_list %}?page={{ next }}">&raquo;</a></li>
+        {% endif %}
+    </ul>
+{% endif %}
+{% endblock %}
+            
+                <table id="user_table">
+                    <thead>
+                        <tr>
+                            <td>{% trans "rank"|capfirst %}</td>
+                            <td colspan="2">{% trans "username"|capfirst %}</td>
+                            <td>{% trans "date joined"|capfirst %}</td>
+                            <td>{% trans "comments"|capfirst %}</td>
+                            <td>{% trans "published"|capfirst %}</td>
+                            <td>{% trans "added"|capfirst %}</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+{% for profile in profile_list %}
+                        <tr class="{% cycle 'odd' 'even' %}">
+                            <td class="strong">{{ first_on_page|add:forloop.counter0 }}</td>
+                            <td class="center avatar mini"><img src="{{ profile.avatar.url_16x16 }}"></td>
+                            <td><a class="{USERS.user_class} user" href="{% url profiles:profile profile.user.username %}">{{ profile.user.username }}</a></td>
+                            <td>{{ profile.user.date_joined }}</td>
+                            <td>{{ profile.num_comments }}</td>
+                            <td>{{ profile.num_published }}</td>
+                            <td>{{ profile.num_stories }}</td>
+                        </tr>
+{% endfor %}
+                    </tbody>
+                </table>
+            
+{% block paginator %}
+{% if has_previous or has_next %}
+    <ul class="pagination">
+        {% if has_previous %}
+        <li><a title="{% trans "Previous page" %}" href="{% url profiles:profile_list %}?page={{ previous }}">&laquo;</a></li>
+        {% endif %}
+        {% for page in page_range %}
+        <li{% ifequal page page_obj.number %} class="active">{{ page }}{% else %}><a title="{% blocktrans %}Page {{ page }}{% endblocktrans %}" href="{% url profiles:profile_list %}?page={{ page }}">{{ page }}</a>{% endifequal %}</li>
+        {% endfor %}
+        {% if has_next %}
+        <li><a title="{% trans "Next page" %}" href="{% url profiles:profile_list %}?page={{ next }}">&raquo;</a></li>
+        {% endif %}
+    </ul>
+{% endif %}
+{% endblock %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block pages %}
+{% nav "ranking" %}
+{{ block.super }}
+{% endblock %}

@@ -1,0 +1,36 @@
+{% load i18n %}
+<div class="statistics general_box clearfix" id="site_statistics">
+    <div id="stats">
+		<h2>{% trans "Site statistics" %}</h2>
+		<dl>
+			<dt>{% trans "Total number of stories:" %}</dt>
+			<dd>{{ stories }}</dd>
+			<dt>{% trans "Total number of comments:" %}</dt>
+			<dd>{{ comments }}</dd>
+			<dt>{% trans "Total number of registered users:" %}</dt>
+			<dd>{{ users }}</dd>
+			<dt>{% trans "Newest registered user:" %}</dt>
+			<dd><a href="#">administrator</a>&nbsp;</dd>
+		</dl>
+	</div>
+	<div class="stats_list" id="active_users">
+		<h2>{% trans "User information" %}</h2>
+		<p class="desc">{% blocktrans count users_count as users %}{{ users }} member{% plural %}{{ users }} members{% endblocktrans %}, {% blocktrans count guests_count as guests %}{{ guests }} guest{% plural %}{{ guests }} guests{% endblocktrans %} online</p>
+{% if users_count %}
+		<ul class="user_list rounded_links">
+    {% for online in users_online %}
+            <li>
+                <a href="{% url profiles:profile online.username %}">
+                    <img src="{{ online.profile.avatar.url_16x16 }}" alt="avatar {{ online.username }}">{{ online }}
+                </a>
+            </li>			
+    {% endfor %}
+		</ul>
+{% endif %}
+			
+	</div>
+	<div class="stats_list" id="active_chat">
+    	<h2>{% trans "Member(s) active in live chat" %}</h2>
+		<p>{% trans "There are no members talking in live chat at the moment" %}</p>
+	</div>
+</div>

@@ -1,0 +1,113 @@
+{% extends 'forum/base.html' %}
+{% load forum_extras %}
+{% load i18n %}
+
+{% block extra_meta %}
+<script type="text/javascript" src="{{ MEDIA_URL }}forum/js/jquery.cookie.js"></script>
+<script type="text/javascript">
+	
+	function set_collapser(cat_id) {
+		category_body_id = "category_body_" + cat_id;
+		if($.cookie(category_body_id)){
+			item_id = "#" + category_body_id; 
+			head_id = item_id.replace("body", "head");
+			$(head_id).addClass("collapsed");
+			$(item_id).hide()
+		}
+	}
+	$(document).ready(function(){	
+		$("a.toggle").click(function(){
+			header_id = $(this).parent().attr('id');
+			body_id = header_id.replace("head", "body");
+			item_id = '#' + body_id
+			if ($(this).parent().attr('class')==''){
+				$(this).parent().addClass("collapsed");
+				$.cookie(body_id, 'collapsed');
+			}else {
+				$(this).parent().removeClass("collapsed");
+				$.cookie(body_id, '');
+			}
+			$(item_id).slideToggle("slow");
+		});
+	{% for iter in cats %}
+		set_collapser({{ iter.id }})
+	{% endfor %}
+	});
+</script>
+{% endblock %}
+
+{% block content %}
+<div id="categories" class="clearfix">
+{% for iter in cats %}
+<div class="category_block block_wrap">
+	<h3 id="category_head_{{ iter.id }}" class="maintitle">
+		<a class="toggle right" title="Toggle this category" href="#">Toggle this category</a>
+		<a title="View category" href="#">{{ iter.cat }}</a>
+	</h3>
+	<div class="table_wrap" id="category_body_{{ iter.id }}">
+			<table class="ipb_table" cellspacing="0" summary="Forums within the category '{{ iter.cat }}'">
+				<tbody>
+				{% for forum in iter.forums %}
+					{% include 'forum/forum_row.html' %}
+				{% endfor %}
+				</tbody>
+			</table>
+	</div>
+{% endfor %}
+</div>
+
+<div class="statistics general_box clearfix" id="board_statistics">
+    <div id="stats">
+		<h2><img src="http://live.skinbox.net/public/style_images/velvet-blue/_custom/icon_stats.png"> {% trans "Board statistics" %}</h2>
+		<dl>
+			<dt>{% trans "Total number of posts:" %}</dt>
+			<dd>{{ posts }}</dd>
+			<dt>{% trans "Total number of topics:" %}</dt>
+			<dd>{{ topics }}</dd>
+			<dt>{% trans "Total number of registered users:" %}</dt>
+			<dd>{{ users }}</dd>
+			<dt>{% trans "Newest registered user:" %}</dt>
+			<dd>{{ last_user|profile_link }}&nbsp;</dd>
+		</dl>
+	</div>
+	<div class="stats_list" id="active_users">
+		<h2><img src="http://live.skinbox.net/public/style_images/velvet-blue/_custom/icon_usersonline.png"> 
+			{% trans "User information" %}<br>
+			<span class="desc">{{ online_count }} members, {{ guest_count }} guests online</span>
+		</h2>
+{% if online_count %}
+		<p>
+    {% for online in users_online %}
+			<span class="name">{{ online|profile_link }}</span>					
+    {% endfor %}
+		</p>
+{% endif %}
+			
+	</div>
+	<div class="stats_list" id="active_chat">
+    	<h2><img src="http://live.skinbox.net/public/style_images/velvet-blue/_custom/icon_chat.png"> 
+			{% trans "Member(s) active in live chat" %}
+		</h2>
+		<p>{% trans "There are no members talking in live chat at the moment" %}</p>
+	</div>
+</div>
+
+{% if forum_settings.LOFI_SUPPORT %}
+<div class="filter_bar rounded" id="forum_filter">
+    <a href="{% url djangobb:lofi_index %}">Lo-Fi Version</a>
+</div>
+{% endif %}
+</div>
+{% endblock %}
+
+{% block controls %}
+<dl id="searchlinks" class="conl">
+	<dt><strong>{% trans "Search links" %}</strong></dt>
+	<dd><a href="{% url djangobb:search %}?action=show_24h">{% trans "Show recent posts" %}</a></dd>
+	<dd><a href="{% url djangobb:search %}?action=show_unanswered">{% trans "Show unanswered posts" %}</a></dd>
+	{% if user.is_authenticated %}
+		<dd><a href="{% url djangobb:search %}?action=show_subscriptions">{% trans "Show your subscribed topics" %}</a></dd>
+		<dd><a href="{% url djangobb:search %}?action=show_user&amp;user_id={{ request.user.id }}">{% trans "Show your posts" %}</a></dd>
+	{% endif %}
+</dl>
+{% endblock %}

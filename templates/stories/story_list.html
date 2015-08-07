@@ -1,0 +1,57 @@
+{% extends "stories/base.html" %}
+
+{% load i18n %}
+{% load voting_tags %}
+{% load story_tags %}
+{% load profile_sidebar_tags %}
+{% load story_sidebar_tags %}
+{% load category_sidebar_tags %}
+{% load nav %}
+
+{% load comments %}
+{% load url_tags %}
+
+{% block content %}
+	{% block sidebar %}
+        <aside>
+{% sidebar_search %}
+{% if category %}
+{% sidebar_category_info %}
+{% else %}
+{% sidebar_invite %}
+{% endif %}
+{% sidebar_user_stories %}
+{% sidebar_top_stories %}
+{% sidebar_tag_cloud %}
+        </aside>
+	{% endblock %}
+        <div id="left">
+{% render_story_submit_form %}
+{% block tabs %}{% endblock %}
+{% block story_list %}
+{% if domain %}
+            <p class="info">Wyniki wyszukiwania dla domeny: {{ domain }}</p>
+{% endif %}
+{% if tag %}
+            <p class="info">Wyniki wyszukiwania dla tagu: {{ tag }}</p>
+{% endif %}
+{% if search_query %}
+            <p class="info">Wyniki wyszukiwania dla frazy: {{ search_query }}</p>
+{% endif %}
+{% if not story_list %}
+            <p class="noresults">{% trans "No stories" %}</p>
+{% endif %}
+            <ul class="story_list">
+{% for story in story_list %}
+{% render_story story %}
+{% endfor %}
+            </ul>
+{% endblock %}
+{% block paginator %}{% endblock %}
+        </div>
+{% endblock %}
+
+{% block pages %}
+{% if not nav %}{% nav "home" %}{% endif %}
+{{ block.super }}
+{% endblock %}

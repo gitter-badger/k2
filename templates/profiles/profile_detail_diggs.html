@@ -1,0 +1,23 @@
+{% extends "profiles/profile_detail.html" %}
+
+{% load i18n %}
+{% load story_tags %}
+
+{% block title %} - Profil uzytkownika {{ profile.user.username }} - Głosy za{% endblock %}
+
+{% block tab %}
+         <ul class="tabs no_title mini">
+            <li class="active"><a href="{% url profiles:profile profile.user.username %}">{% trans "digs"|capfirst %}</a></li>
+            <li><a href="{% url profiles:profile_stories profile.user.username %}">{% trans "added"|capfirst %}</a></li>
+            <li><a href="{% url profiles:profile_comments profile.user.username %}">{% trans "comments"|capfirst %}</a></li>
+{% if user.is_moderator %}
+            <li><a href="{% url profiles:profile_invites profile.user.username %}">{% trans "invited users"|capfirst %}</a></li>
+{% endif %}
+        </ul>
+        
+        <ul class="story_list">
+{% for story in story_list %}
+{% render_story_simple story %}
+{% endfor %}
+            </ul>
+{% endblock %}

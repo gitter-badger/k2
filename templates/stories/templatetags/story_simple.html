@@ -1,0 +1,20 @@
+{% extends "stories/templatetags/story_base.html" %}
+
+{% load i18n %}
+
+{% block classes %}story no_links{% endblock %}
+
+{% block votebox %}
+                <div class="sidebox votebox">
+                    <div class="score positive" id="story_{{ story.id }}">{{ story.num_votes_positive }} <span>{% blocktrans count story.num_votes_positive as votes %}vote{% plural %}votes{% endblocktrans %}</span></div>
+                </div>
+{% endblock %}
+
+{% block entry %}
+{% load url_tags %}
+                <div class="entry video">
+                    <h2><a href="{{ story.story_url }}">{{ story.title }}</a></h2>
+					<div class="tagline grayed"><a rel="nofollow" href="{{ story.url }}">{% url_domain story.url %}</a> {% trans "added" %} <span title="{{ story.created_date }}">{{ story.created_date|timesince }} {% trans "ago" %}</span> {% trans "by" %} <a class="user {STORIES.user_class}" href="{% url profiles:profile story.user.username %}">{{ story.user.username }}</a> {% trans "to" %} <a class="category" href="{% url stories:popular_category_list story.category.slug %}">{{ story.category.name }}</a></div>
+					<div class="desc">{{ story.summary }}</div>
+				</div>
+{% endblock %}

@@ -1,0 +1,4 @@
+{{ body }}
+
+--
+Wiadomość przysłana{% if request.user.is_authenticated %} przez użytkownika {{ request.user }}{% endif %} z adresu IP {{ ip }} (Host: {{ host }}, User-Agent: {{ user_agent }}

@@ -1,0 +1,68 @@
+{% extends "stories/story_detail.html" %}
+
+{% load i18n %}
+{% load comments %}
+{% load story_tags %}
+
+{% block title %} - {{ story.title }} - {% trans "Positive votes" %}{% endblock %}
+
+{% block tabs %}
+        <ul class="tabs">
+            <li>
+                <a href="{% url stories:story_slug story.id story.slug %}">Komentarze ({{ comment_count }})</a>
+            </li>
+            <li class="active">
+                <a href="{% url stories:references_slug story.id story.slug %}">Powiązane linki ({{ story.references.count }})</a>
+            </li>
+            <li>
+                <a href="{% url stories:digs_slug story.id story.slug %}">Głosowali za ({{ score.positive_num_votes }})</a>
+            </li>
+            <li>
+                <a href="{% url stories:buries_slug story.id story.slug %}">Głosowali przeciw ({{ score.negative_num_votes }})</a>
+            </li>
+        </ul>
+{% endblock %}
+
+{% block story_content %}
+		<div id="story_content">
+        <section class="add_comment add_reference">
+{% if not request.user.is_authenticated %}
+            <p>Proszę <a href="/logowanie/">zaloguj się</a> lub <a href="/rejestracja/">zarejestruj</a> aby dodać link</p>
+{% else %}
+            <h2 class="page-title">{% trans "Add new reference link" %}</h2>
+            <form method="post" class="add_reference_form" action="{% url stories:references_slug story.id story.slug %}">
+                {% csrf_token %}
+                <fieldset class="aligned wide">
+                <div class="form-row">
+                    <input type="hidden" name="story" id="id_story" value="{{ story.id }}" />
+                    {{ form.title.label_tag }}
+{% if parsed_title %}
+                    <input type="text" maxlength="255" name="title" id="id_title" value="{{ parsed_title }}">
+{% else %}
+                    {{ form.title }}
+{% endif %}
+{% if form.title.errors %}{% for error in form.title.errors %}
+                    <p class="error" id="title_error">{{ error }}</p>
+{% endfor %}{% endif %}
+                </div>
+                <div class="form-row">
+                    {{ form.url.label_tag }}
+{% if parsed_url %}
+                    <input type="url" id="id_url" name="url" value="{{ parsed_url }}">
+{% else %}
+                    {{ form.url }}
+{% endif %}
+{% if form.url.errors %}{% for error in form.url.errors %}
+                    <p class="error" id="title_error">{{ error }}</p>
+{% endfor %}{% endif %}
+                </div>
+                <div class="submit-row">
+                    <input class="input_submit" type="submit" name="reference_submit" value="{% trans "Save" %}" />
+                </div>
+                </fieldset>
+			</form>
+{% endif %}
+		</section>
+
+		</div>
+{% endblock %}

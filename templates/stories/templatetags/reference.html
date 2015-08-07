@@ -1,0 +1,6 @@
+{% load i18n %}
+{% load url_tags %}
+            <article id="reference_{{ reference.id }}" class="reference">
+                <a rel="nofollow" href="{{ reference.url }}">{{ reference.title }}</a>
+                <div class="tagline grayed"><a rel="nofollow" href="{{ reference.url }}">{% url_domain reference.url %}</a> {% trans "added" %} <span title="{{ reference.created_date }}">{{ reference.created_date|timesince }} {% trans "ago" %}</span> {% trans "by" %} <a class="user {STORIES.user_class}" href="{% url profiles:profile reference.user.username %}">{{ reference.user.username }}</a></div>
+            </article>

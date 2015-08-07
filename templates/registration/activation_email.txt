@@ -1,0 +1,10 @@
+Ktoś, prawdopodobnie ty, zarejestrował konto na klid.pl przy użyciu tego adresu e-mail. Jeżeli to byłeś/byłaś ty i chciałbyś/chciałabyś aktywować oraz korzystać z tego konta kliknij w poniższy link lub skopiuj i wklej go do paska adresu twojej przeglądarki:
+
+http://klid.pl{% url profiles:registration_activate activation_key %}
+
+Jeżeli to nie ty, po prostu zignoruj tę wiadomość, a konto wygaśnie automatycznie po {{ expiration_days }} dniach.
+
+--
+
+Pozdrawiamy,
+zespół Klid.pl

@@ -1,0 +1,18 @@
+{% extends "flatpages/base.html" %}
+
+{% load tagging_tags %}
+
+{% block content %}
+{% tag_cloud_for_model stories.Story as tags with steps=6 min_count=1 distribution=log %}
+        <div id="center">
+            <div id="static">
+                <h2 class="page-title">{{ flatpage.title }}</h2>
+                <p>Wybierz tag z poniższej listy aby zobaczyć wszystkie linki nim otagowane.</p>
+                {{ flatpage.content }}
+{% for tag in tags %}
+                <a class="tag-{{ tag.font_size }}" rel="tag" href="/tag/{{ tag.name|slugify }}/" style="font-size:{{ tag.font_size|add:12 }}px;padding:3px;">{{ tag.name }}</a> 
+{% endfor %}
+                <p> </p>
+            </div>
+        </div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% load i18n %}
+{% if votes %}
+        <div class="sidebox">
+            <h3 class="toggle">{% block sidebox_title %}{% trans "Votes positive" %}{% endblock %}</h3>
+            <div class="content">
+                <ul class="user_list rounded_links">
+                {% for vote in votes %}
+                    <li>
+                        <a title="{{ vote.date_modified }}" href="{% url profiles:profile vote.user.username %}">
+                            <img src="{{ vote.user.profile.avatar.url_16x16 }}" alt="avatar {{ vote.user.username }}">{{ vote.user }}
+                        </a>
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+        </div>
+{% endif %}

@@ -1,0 +1,12 @@
+{% load i18n %}
+        <div id="search">
+            <form name="form1" method="get" action="{% url stories:search %}">
+                <input type="search" class="search_input" name="q" value="{{ q|escape }}" id="inputString" autocomplete="off" onkeyup="lookup(this.value);" placeholder="{% trans "search stories"|capfirst %}" autofocus required>
+                <input type="submit" value="{% trans "search"|capfirst %}" class="search_submit">
+            </form>
+        </div>
+
+        <div class="suggestionsBox" id="suggestions" style="display: none;">
+            <div class="suggestionList" id="autoSuggestionsList">&nbsp;</div>
+            <div style="clear:both"></div>
+        </div>

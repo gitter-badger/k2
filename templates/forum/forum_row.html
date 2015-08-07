@@ -1,0 +1,41 @@
+{% load forum_extras %}
+{% load cache %}
+{% load i18n %}
+
+{% if forum.last_post.topic %}
+	<tr {% if forum.last_post.topic|has_unreads:user %}class="inew"{% endif %}>
+{% else %}
+	<tr class="{% cycle 'row1' 'row2' %}">
+{% endif %}
+    <td class="altrow" width="1%">
+    {% if forum.last_post.topic and forum.last_post.topic|has_unreads:user %}
+        <a id="forum_img_2" class="forum_marker" title="Mark forum as read?" href="{% url djangobb:forum forum.id %}">
+            <img title="Mark as read" alt="Unread category" src="{{ MEDIA_URL }}img/forum/f_cat_unread.png">
+        </a>
+    {% else %}
+        <img title="Read forum" alt="Read forum" src="{{ MEDIA_URL }}img/forum/f_read.png">
+    {% endif %}
+    </td>
+    <td width="50%">
+        <h4>
+            <a title="Go to forum" href="{% url djangobb:forum forum.id %}">{{ forum }}</a>
+            <div class="index_numbers_hover">
+                <div class="index_numbers"><strong>{{ forum.topic_count }}</strong> {% trans "Topics" %} &amp; <strong>{{ forum.post_count }}</strong> {% trans "Replies" %}</div>
+            </div>
+        </h4>
+        <p class="desc">{{ forum.description|safe }}</p>
+        <!--ol id="subforums_2" class="subforums">
+            <li><a></a></li>
+        </ol-->
+    </td>
+    <td width="35%">
+{% if forum.updated %}
+	{% if forum.last_post.topic %}
+        <ul class="last_post">
+            <li><strong><a title="Go to the first unread post: {{ forum.last_post.topic }}" href="{{ forum.last_post.get_absolute_url }}">{{ forum.last_post.topic }}</a></strong></li>
+            <li><div class="smalltext"><a title="View last post" href="{{ forum.last_post.get_absolute_url }}">{% forum_time forum.last_post.created %}</a> {% trans "by" %} <a title="View Profile" href="{{ forum.last_post.user.get_absolute_url }}">{{ forum.last_post.user }}</a>&nbsp;<a title="View Profile" class="__user __id390" href="{{ forum.last_post.user.get_absolute_url }}"><img alt="" src="{{ MEDIA_URL }}css/styles/k2/images/forum/user_popup.png"></a><div class="stats_arrow"><a title="View last post" href="{{ forum.last_post.get_absolute_url }}"><img title="View last post" alt="Icon" src="{{ MEDIA_URL }}css/styles/k2/images/forum/last_post.png"></a></div></div></li>
+        </ul>
+   {% endif %}
+{% endif %}
+    </td>
+</tr>

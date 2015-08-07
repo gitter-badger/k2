@@ -1,0 +1,532 @@
+[
+    {
+        "pk": 11, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 0, 
+            "name": "Ekonomia", 
+            "parent": 6, 
+            "slug": "swiatowa-ekonomia",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 25, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 0, 
+            "name": "Artchitektura", 
+            "parent": 24, 
+            "slug": "artchitektura",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 33, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 0, 
+            "name": "Gadżety", 
+            "parent": 32, 
+            "slug": "gadzety",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 19, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 0, 
+            "name": "Ciekawostki", 
+            "parent": 18, 
+            "slug": "ciekawostki",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 17, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 0, 
+            "name": "Zdrowie", 
+            "parent": 1, 
+            "slug": "zdrowie",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 41, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 0, 
+            "name": "Filozofia", 
+            "parent": 40, 
+            "slug": "filozofia",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 14, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 0, 
+            "name": "Astronomia", 
+            "parent": 1, 
+            "slug": "astronomia",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 0, 
+            "name": "Ekonomia", 
+            "parent": 5, 
+            "slug": "ekonomia",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 0, 
+            "name": "Kraj", 
+            "parent": null, 
+            "slug": "kraj",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 1, 
+            "name": "Świat", 
+            "parent": null, 
+            "slug": "swiat",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 15, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 1, 
+            "name": "Biologia", 
+            "parent": 1, 
+            "slug": "biologia",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 1, 
+            "name": "Informacje", 
+            "parent": 5, 
+            "slug": "informacje",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 34, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 1, 
+            "name": "Internet", 
+            "parent": 32, 
+            "slug": "internet",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 1, 
+            "name": "Informacje", 
+            "parent": 6, 
+            "slug": "swiatowe-informacje",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 42, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 1, 
+            "name": "Historia", 
+            "parent": 40, 
+            "slug": "historia",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 26, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 1, 
+            "name": "Design", 
+            "parent": 24, 
+            "slug": "design",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 20, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 1, 
+            "name": "Filmiki", 
+            "parent": 18, 
+            "slug": "filmiki",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 43, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 2, 
+            "name": "Religie i ateizm", 
+            "parent": 40, 
+            "slug": "religie-i-ateizm",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 35, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 2, 
+            "name": "Komputery", 
+            "parent": 32, 
+            "slug": "komputery",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 21, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 2, 
+            "name": "Gry", 
+            "parent": 18, 
+            "slug": "gry",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 2, 
+            "name": "Chemia", 
+            "parent": 1, 
+            "slug": "chemia",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 27, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 2, 
+            "name": "Film", 
+            "parent": 24, 
+            "slug": "film",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 13, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 2, 
+            "name": "Polityka", 
+            "parent": 6, 
+            "slug": "swiatowa-polityka",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 2, 
+            "name": "Nauka", 
+            "parent": null, 
+            "slug": "nauka",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 2, 
+            "name": "Polityka", 
+            "parent": 5, 
+            "slug": "polityka",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 44, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 3, 
+            "name": "Umysł", 
+            "parent": 40, 
+            "slug": "umysl",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 36, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 3, 
+            "name": "Militaria", 
+            "parent": 32, 
+            "slug": "militaria",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 3, 
+            "name": "Fizyka", 
+            "parent": 1, 
+            "slug": "fizyka",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 3, 
+            "name": "Regionalne", 
+            "parent": 5, 
+            "slug": "regionalne",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 18, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 3, 
+            "name": "Rozrywka", 
+            "parent": null, 
+            "slug": "rozrywka",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 28, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 3, 
+            "name": "Lektura", 
+            "parent": 24, 
+            "slug": "lektura",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 22, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 3, 
+            "name": "Obrazki", 
+            "parent": 18, 
+            "slug": "obrazki",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 23, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 4, 
+            "name": "Sport", 
+            "parent": 18, 
+            "slug": "sport",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 4, 
+            "name": "Matematyka", 
+            "parent": 1, 
+            "slug": "matematyka",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 37, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 4, 
+            "name": "Motoryzacja", 
+            "parent": 32, 
+            "slug": "motoryzacja",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 24, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 4, 
+            "name": "Kultura", 
+            "parent": null, 
+            "slug": "kultura",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 29, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 4, 
+            "name": "Muzyka", 
+            "parent": 24, 
+            "slug": "muzyka",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 30, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 5, 
+            "name": "Sztuka", 
+            "parent": 24, 
+            "slug": "sztuka",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 16, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 5, 
+            "name": "Przyroda", 
+            "parent": 1, 
+            "slug": "przyroda",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 38, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 5, 
+            "name": "Oprogramowanie", 
+            "parent": 32, 
+            "slug": "oprogramowanie",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 32, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 5, 
+            "name": "Technologia", 
+            "parent": null, 
+            "slug": "technologia",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 40, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 6, 
+            "name": "Humanizm", 
+            "parent": null, 
+            "slug": "humanizm",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 39, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 6, 
+            "name": "Programowanie", 
+            "parent": 32, 
+            "slug": "programowanie",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 31, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 6, 
+            "name": "Teatr", 
+            "parent": 24, 
+            "slug": "teatr",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 45, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 7, 
+            "name": "Inne", 
+            "parent": null, 
+            "slug": "inne",
+            "summary": ""
+        }
+    }, 
+    {
+        "pk": 46, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 1, 
+            "name": "Pomysły", 
+            "parent": 45, 
+            "slug": "pomysly",
+            "summary": "",
+            "enable_stories": 0
+        }
+    }, 
+    {
+        "pk": 47, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 2, 
+            "name": "Problemy", 
+            "parent": 45, 
+            "slug": "problemy",
+            "summary": "",
+            "enable_stories": 0
+        }
+    }, 
+    {
+        "pk": 48, 
+        "model": "stories.category", 
+        "fields": {
+            "position": 3, 
+            "name": "Różne", 
+            "parent": 45, 
+            "slug": "rozne",
+            "summary": ""
+        }
+    }
+]

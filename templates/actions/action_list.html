@@ -1,0 +1,40 @@
+{% extends "stories/story_list.html" %}
+
+{% load i18n %}
+{% load i18n %}
+{% load nav %}
+
+{% block story_list %}
+            <h2 class="page-title">{% trans "observatory"|capfirst %}</h2>
+{% if not action_list %}
+            <p class="noresults">{% trans "No actions" %}</p>
+{% else %}
+            <table id="action_table">
+                <thead>
+                    <tr>
+                        <td><span id="type">Typ</span></td>
+                        <td><span id="time">Czas</span></td>
+                        <td><span id="action">Akcja</span></td>
+                    </tr>
+                <thead>
+                <tbody>
+{% for action in action_list %}
+                    <tr class="action-{{ action.type }}">
+                        <td><span class="type-value">{{ action.get_type_display }}</span></td>
+                        <td><time datetime="{{ action.date_added|date:"c" }}">{{ action.date_added|time:"H:i" }}</time></td>
+                        <td>
+                            <a href="{% url profiles:profile action.user.username %}">
+                                <img src="{{ action.user.profile.avatar.url_16x16 }}" alt="avatar {{ action.user.username }}">{{ action.user.username }}
+                            </a> {{ action.get_type_display }} 
+                            <a href="{% url stories:story_slug action.story.id action.story.slug %}" >{{ action.story }}</a></td>
+                    </tr>
+{% endfor %}
+                </tbody>
+            </table>
+{% endif %}
+{% endblock %}
+
+{% block pages %}
+{% nav "obs" %}
+{{ block.super }}
+{% endblock %}

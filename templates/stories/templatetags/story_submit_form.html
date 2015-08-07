@@ -1,0 +1,17 @@
+{% load i18n %}
+{% if request.user.is_authenticated %}
+<div id="submit">
+    <form id="story_form" action="{% url stories:story_add %}">
+        <fieldset class="aligned wide" id="main_submit">
+            <div class="form-row">
+{% if form.url.errors %}{% for error in form.url.errors %}
+                <p class="error">{{ error }}</p>
+{% endfor %}{% endif %}
+                <label for="id_url">{% trans "Submit a link" %}</label>
+                {{ form.url }}
+                <button type="submit">{% trans "Add" %} &#43;</button>
+            </div>
+        </fieldset>
+    </form>
+</div>
+{% endif %}

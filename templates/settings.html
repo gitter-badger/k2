@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block title %} - {% trans "user settings"|capfirst %}{% endblock %}
+
+{% block content %}
+        <section id="static-page">
+            <h2 class="page-title">{% trans "user settings"|capfirst %}</h2>
+            {% block settings %}{% endblock %}
+        </section>
+{% endblock %}

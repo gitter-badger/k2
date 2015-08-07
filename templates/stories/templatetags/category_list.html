@@ -1,0 +1,22 @@
+{% load i18n %}
+        <ul id="categories" role="tree">
+            <h3>{% trans "categories"|capfirst %}</h3>
+            <li role="treeitem">
+                <a href="/">{% trans "see all"|capfirst %}</a>
+            </li>
+{% for category in categories %}
+    {% if not category.children %}
+            <li role="treeitem">
+                <a rel="tag" href="{% url stories:popular_category_list category.object.slug %}">{{ category.object.name }}</a>
+    {% else %}
+            <li role="group">
+                <span><a rel="tag" href="{% url stories:popular_category_list category.object.slug %}">{{ category.object.name }}</a></span>
+                <ul>
+        {% for subcategory in category.children %}
+                    <li role="treeitem"><a rel="tag" href="{% url stories:popular_category_list subcategory.slug %}">{{ subcategory.name }}</a></li>
+        {% endfor %}
+                </ul>
+    {% endif %}
+            </li>
+{% endfor %}
+        </ul>

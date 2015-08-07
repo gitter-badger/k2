@@ -1,0 +1,9 @@
+{% load i18n %}
+{% blocktrans with site.name as sitename and invitation_key.from_user.username as username %}You have been invited by {{ username }} to join {{ sitename }}!{% endblocktrans %}
+
+{% trans "Click the link below or copy/paste to your web browser's address bar to join:" %}
+http://{{site.domain}}{% url profiles:registration_register %}?invitation_key={{ invitation_key.key }}
+
+{% blocktrans with site.name as sitename %}All the best,
+
+The {{ sitename }} Team{% endblocktrans %}

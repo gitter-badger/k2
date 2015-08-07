@@ -1,0 +1,25 @@
+{% extends "profiles/profile_detail.html" %}
+
+{% load i18n %}
+
+{% block title %} - Profil uzytkownika {{ profile.user.username }} - Zaproszeni{% endblock %}
+
+{% block tab %}
+         <ul class="tabs no_title mini">
+            <li><a href="{% url profiles:profile profile.user.username %}">{% trans "digs"|capfirst %}</a></li>
+            <li><a href="{% url profiles:profile_stories profile.user.username %}">{% trans "added"|capfirst %}</a></li>
+            <li><a href="{% url profiles:profile_comments profile.user.username %}">{% trans "comments"|capfirst %}</a></li>
+{% if user.is_moderator %}
+            <li class="active"><a href="{% url profiles:profile_invites profile.user.username %}">{% trans "invited users"|capfirst %}</a></li>
+{% endif %}
+        </ul>
+        <ul class="user_list rounded_links">
+{% for invitation in invite_list %}
+            <li>
+                <a title="{{ invitation.date_invited }}" href="{% url profiles:profile invitation.registrant.username %}">
+                    <img src="{{ invitation.registrant.profile.avatar.url_16x16 }}" alt="avatar {{ invitation.registrant.username }}">{{ invitation.registrant }}
+                </a>
+            </li>
+{% endfor %}
+        </ul>
+{% endblock %}

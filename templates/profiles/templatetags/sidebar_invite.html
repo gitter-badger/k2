@@ -1,0 +1,14 @@
+{% load i18n %}
+{% if remaining_invitations %}
+        <div class="sidebox">
+            <div class="title" onclick="$(this).next().toggle();">{% blocktrans with site.name as sitename %}Invite to join {{ sitename }}{% endblocktrans %}</div>
+            <div class="content">
+                <p>{% trans "Invite a friend; insert his/her e-mail address" %}:</p>
+                <form method="post" action="{% url profiles:invitation_invite %}">
+                    {% csrf_token %}
+                    {{ form.email }}
+                    <input type="submit" value="{% trans "invite"|capfirst %}" class="input_submit" />
+                </form>
+            </div>
+        </div>
+{% endif %}

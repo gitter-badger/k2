@@ -1,0 +1,19 @@
+
+/*tweetboard*/
+.tb_passive_container {
+    top: 185px !important;
+}
+#tb_waitload {
+    left: 7px !important;
+}
+#tb_passive_tweet {
+    background-image: url('../../images/passive_tweets.png') !important;
+    margin-left: -5px;
+}
+#tb_passive_large {
+    background-image: url('../../images/passive_tab.png') !important;
+    width: 28px !important;
+}
+p.tb_doing {
+    display: none !important;
+}
